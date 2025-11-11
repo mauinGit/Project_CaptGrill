@@ -64,12 +64,12 @@ class MenuItemResource extends Resource
 
     public static function getLabel(): string
     {
-        return 'Menu Item';
+        return 'Menu';
     }
 
     public static function getPluralLabel(): string
     {
-        return 'Menu Items';
+        return 'Detail Menu';
     }
 
 
