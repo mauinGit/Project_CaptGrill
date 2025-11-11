@@ -23,11 +23,13 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $panelid = 'admin';
         return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id($panelid)
+            ->path($panelid)
             ->login()
+            ->registration()
             ->colors([
                 'primary' => Color::Amber,
             ])
