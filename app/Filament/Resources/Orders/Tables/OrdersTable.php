@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Filament\Resources\Orders\Tables;
+
+use Dom\Text;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class OrdersTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('order_code')
+                    ->label('Nomor Pesanan')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('customer_name')
+                    ->label('Nama Pelanggan')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('total_amount')
+                    ->label('Total Pembelian')
+                    ->money('idr', true)
+                    ->sortable(),
+                TextColumn::make('payment_method')
+                    ->label('Metode Pembayaran')
+                    ->sortable()
+                    ->searchable(),
+                //TextColumn::make('status')
+                //    ->label('Status Pesanan')
+                //   ->sortable()
+                //    ->searchable(),
+                TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime('d M Y H:i')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->dateTime('d M Y H:i')
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ])
+            ->reorderableColumns();
+    }
+}
