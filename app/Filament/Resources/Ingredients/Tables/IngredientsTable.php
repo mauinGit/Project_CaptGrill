@@ -6,6 +6,7 @@ use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -28,7 +29,24 @@ class IngredientsTable
                 TextColumn::make('reorder_level')
                     ->label('Status')
                     ->sortable()
-                    ->color(fn ($record) => $record->stock < $record->reorder_level ? 'danger' : 'success'),
+                    ->formatStateUsing(function ($record) {
+                        if ($record->stock <= 0) {
+                            return '❌ Stock Habis';
+                        } elseif ($record->stock <= $record->reorder_level) {
+                            return '⚠️ Stock Mulai Menipis';
+                        } else {
+                            return '✅ Stock Aman';
+                        }
+                    })
+                    ->color(function ($record) {
+                        if ($record->stock <= 0) {
+                            return 'danger';
+                        } elseif ($record->stock <= $record->reorder_level) {
+                            return 'warning';
+                        } else {
+                            return 'success';  //
+                        }
+                    }),
                 TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime('d M Y H:i')
@@ -43,6 +61,7 @@ class IngredientsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

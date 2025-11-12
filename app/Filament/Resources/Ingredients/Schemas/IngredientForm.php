@@ -24,7 +24,7 @@ class IngredientForm
                     ->required()
                     ->maxLength(50),
                 TextInput::make('reorder_level')
-                    ->label('Reorder Level')
+                    ->label('Batas Minimum')
                     ->numeric()
             ]);
     }
