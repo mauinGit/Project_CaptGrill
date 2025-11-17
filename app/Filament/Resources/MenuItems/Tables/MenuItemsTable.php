@@ -30,6 +30,10 @@ class MenuItemsTable
                     ->label('Kategori')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('ingredients_id')
+                    ->label('Jumlah Bahan')
+                    ->getStateUsing(fn ($record) => $record->ingredients()->count())
+                    ->sortable(),
                 ImageColumn::make('image')
                     ->label('Gambar Menu')
                     ->square()
