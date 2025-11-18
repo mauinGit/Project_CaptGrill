@@ -48,4 +48,9 @@ class Order extends Model
             ->withPivot(['quantity', 'price', 'subtotal'])
             ->withTimestamps();
     }
+
+    protected $casts = [
+        'items' => 'array',
+    ];
+
 }

@@ -5,7 +5,9 @@ namespace App\Filament\Resources\Orders\Tables;
 use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
+use Filament\Schemas\Components\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -26,6 +28,10 @@ class OrdersTable
                 TextColumn::make('total_amount')
                     ->label('Total Pembelian')
                     ->money('idr', true)
+                    ->sortable(),
+                TextColumn::make('quantity')
+                    ->label('Jumlah Item')
+                    ->numeric()
                     ->sortable(),
                 TextColumn::make('payment_method')
                     ->label('Metode Pembayaran')
@@ -48,6 +54,7 @@ class OrdersTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

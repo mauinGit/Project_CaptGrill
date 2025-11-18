@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
-use Dom\Text;
-use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Repeater;
 use Filament\Schemas\Schema;
+use App\Models\MenuItem;
 
 class OrderForm
 {
@@ -14,14 +14,15 @@ class OrderForm
     {
         return $schema
             ->components([
+                
+                // ===========================
+                // INFORMASI PELANGGAN
+                // ===========================
                 TextInput::make('customer_name')
                     ->label('Nama Pelanggan')
                     ->required()
-                    ->maxLength(255),
-                TextInput::make('total_amount')
-                    ->label('Total Pembelian')
-                    ->numeric()
-                    ->required(),
+                    ->columnSpan(1),
+
                 Select::make('payment_method')
                     ->label('Metode Pembayaran')
                     ->options([
@@ -29,11 +30,88 @@ class OrderForm
                         'qris' => 'Qris',
                         'gojek' => 'Gojek',
                     ])
-                    ->required(),
+                    ->required()
+                    ->columnSpan(1),
+
+                // ===========================
+                // DETAIL PEMESANAN (REPEATER)
+                // ===========================
+                Repeater::make('items')
+                ->label('Detail Pemesanan')
+                ->schema([
+                    Select::make('menu_item_id')
+                        ->label('Menu')
+                        ->options(MenuItem::pluck('name', 'id'))
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $menu = MenuItem::find($state);
+                            if ($menu) {
+                                $set('price', $menu->price);
+                                $set('subtotal', $menu->price);
+                                $set('quantity', 1);
+                            }
+                        })
+                        ->required(),
+
+                    TextInput::make('quantity')
+                    ->label('Qty')
+                    ->numeric()
+                    ->reactive()
+                    ->dehydrated()
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        $price = $get('price') ?? 0;
+                        $set('subtotal', $state * $price);
+
+                        // Re-hitung total dari semua item
+                        $items = $get('../../items') ?? [];
+                        $total = collect($items)->sum('subtotal');
+                        $qtyTotal = collect($items)->sum('quantity');
+
+                        $set('../../total_amount', $total);
+                        $set('../../quantity', $qtyTotal);
+                    }),
+
+
+                    TextInput::make('price')
+                        ->label('Harga')
+                        ->numeric()
+                        ->disabled(),
+
+                    TextInput::make('subtotal')
+                        ->label('Subtotal')
+                        ->numeric()
+                        ->disabled(),
+                ])
+                ->columns(4)
+                ->dehydrated(false)
+
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        
+                        // total amount
+                        $total = collect($get('items'))->sum('subtotal');
+                        $set('total_amount', $total);
+
+                        // total qty
+                        $qtyTotal = collect($get('items'))->sum('quantity');
+                        $set('quantity', $qtyTotal);
+                    }),
+
+                // ===========================
+                // TOTAL (AUTO)
+                // ===========================
+                TextInput::make('total_amount')
+                    ->label('Total Pembelian')
+                    ->numeric()
+                    ->disabled()
+                    ->dehydrated(),
+
                 TextInput::make('quantity')
                     ->label('Jumlah Item')
                     ->numeric()
-                    ->required(),
-            ]);
+                    ->disabled()
+                    ->dehydrated(),
+            ])
+            ->columns(2); // <-- biar layout rapi tanpa Section
     }
 }

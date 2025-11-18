@@ -23,27 +23,6 @@ class IngredientsRelationManager extends RelationManager
 {
     protected static string $relationship = 'ingredients';
 
-    public function form(Schema $schema): Schema
-    {
-        return $schema->components([
-            Select::make('ingredient_id')
-                ->label('Bahan')
-                ->options(Ingredient::pluck('name', 'id')) 
-                ->searchable()
-                ->required(),
-
-            TextInput::make('quantity_used')
-                ->label('Jumlah Digunakan')
-                ->numeric()
-                ->required(),
-
-            TextInput::make('unit')
-                ->label('Satuan')
-                ->placeholder('gram / pcs / slice')
-                ->required(),
-        ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table

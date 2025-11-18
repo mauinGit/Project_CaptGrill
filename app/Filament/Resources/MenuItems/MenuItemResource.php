@@ -34,27 +34,6 @@ class MenuItemResource extends Resource
         return MenuItemsTable::configure($table);
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return $schema
-            ->components([
-                TextEntry::make('name')
-                    ->label('Menu Item')
-                    ->columnSpanFull(),
-                TextEntry::make('price')
-                    ->label('Harga')
-                    ->money('idr', true),
-                TextEntry::make('category')
-                    ->label('Kategori'),
-                TextEntry::make('created_at')
-                    ->label('Created At')
-                    ->dateTime('d M Y H:i'),
-                TextEntry::make('updated_at')
-                    ->label('Updated At')
-                    ->dateTime('d M Y H:i'),
-            ]);
-    }
-
     public static function getRelations(): array
     {
         return [
