@@ -3,8 +3,11 @@
 namespace App\Filament\Resources\Orders\Pages;
 
 use App\Filament\Resources\Orders\OrderResource;
+use App\Models\Order;
 use Filament\Infolists\Components\Section;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewOrder extends ViewRecord
@@ -15,6 +18,19 @@ class ViewOrder extends ViewRecord
     {
         return [
             EditAction::make(),
+
+            Action::make('print')
+                ->label('Print Invoice')
+                ->icon('heroicon-o-printer')
+                ->color('primary')
+                ->action(function (Order $record) {
+                    return response()->streamDownload(function () use ($record) {
+                        echo app('dompdf.wrapper')->loadView('pdf.order-invoice', [
+                            'order' => $record,
+                            'items' => $record->menuItems,
+                        ])->output();
+                    }, 'invoice-' . $record->id . '.pdf');
+                }),
         ];
     }
 }

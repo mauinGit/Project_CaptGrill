@@ -19,23 +19,24 @@ class EditOrder extends EditRecord
 
     protected function afterSave(): void
     {
-        $order = $this->record;
         $items = $this->data['items'] ?? [];
 
-        // Reset pivot, insert ulang
-        $order->menuItems()->detach();
+        // hapus pivot lama
+        $this->record->menuItems()->detach();
 
+        // insert pivot baru
         foreach ($items as $item) {
-            $order->menuItems()->attach($item['menu_item_id'], [
+            $this->record->menuItems()->attach($item['menu_item_id'], [
                 'quantity' => $item['quantity'],
-                'price'    => $item['price'],
+                'price' => $item['price'],
                 'subtotal' => $item['subtotal'],
             ]);
         }
 
-        $order->update([
-            'total_amount' => $order->menuItems->sum(fn ($i) => $i->pivot->subtotal),
-            'quantity'     => $order->menuItems->sum(fn ($i) => $i->pivot->quantity),
+        // update total
+        $this->record->update([
+            'quantity' => collect($items)->sum('quantity'),
+            'total_amount' => collect($items)->sum('subtotal'),
         ]);
     }
 }

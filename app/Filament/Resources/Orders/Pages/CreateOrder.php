@@ -11,21 +11,20 @@ class CreateOrder extends CreateRecord
 
     protected function afterCreate(): void
     {
-        $order = $this->record;
         $items = $this->data['items'] ?? [];
 
         foreach ($items as $item) {
-            $order->menuItems()->attach($item['menu_item_id'], [
+            $this->record->menuItems()->attach($item['menu_item_id'], [
                 'quantity' => $item['quantity'],
-                'price'    => $item['price'],
+                'price' => $item['price'],
                 'subtotal' => $item['subtotal'],
             ]);
         }
 
-        // update total order
-        $order->update([
-            'total_amount' => $order->menuItems->sum(fn ($i) => $i->pivot->subtotal),
-            'quantity'     => $order->menuItems->sum(fn ($i) => $i->pivot->quantity),
+        // Hitung total ke orders table
+        $this->record->update([
+            'quantity' => collect($items)->sum('quantity'),
+            'total_amount' => collect($items)->sum('subtotal'),
         ]);
     }
 }

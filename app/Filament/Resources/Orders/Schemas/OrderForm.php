@@ -33,11 +33,19 @@ class OrderForm
                     ->required()
                     ->columnSpan(1),
 
-                // ===========================
-                // DETAIL PEMESANAN (REPEATER)
-                // ===========================
+                TextInput::make('total_amount')
+                    ->label('Total Pembelian')
+                    ->numeric()
+                    ->disabled()
+                    ->dehydrated(),
+
+                TextInput::make('quantity')
+                    ->label('Jumlah Item')
+                    ->numeric()
+                    ->disabled()
+                    ->dehydrated(),
+                    
                 Repeater::make('items')
-                ->label('Detail Pemesanan')
                 ->schema([
                     Select::make('menu_item_id')
                         ->label('Menu')
@@ -71,7 +79,6 @@ class OrderForm
                         $set('../../quantity', $qtyTotal);
                     }),
 
-
                     TextInput::make('price')
                         ->label('Harga')
                         ->numeric()
@@ -90,27 +97,16 @@ class OrderForm
                         
                         // total amount
                         $total = collect($get('items'))->sum('subtotal');
-                        $set('total_amount', $total);
+                        $set('total_amount.order_items', $total);
 
                         // total qty
                         $qtyTotal = collect($get('items'))->sum('quantity');
-                        $set('quantity', $qtyTotal);
+                        $set('quantity.order_items', $qtyTotal);
                     }),
 
                 // ===========================
                 // TOTAL (AUTO)
                 // ===========================
-                TextInput::make('total_amount')
-                    ->label('Total Pembelian')
-                    ->numeric()
-                    ->disabled()
-                    ->dehydrated(),
-
-                TextInput::make('quantity')
-                    ->label('Jumlah Item')
-                    ->numeric()
-                    ->disabled()
-                    ->dehydrated(),
             ])
             ->columns(2); // <-- biar layout rapi tanpa Section
     }
