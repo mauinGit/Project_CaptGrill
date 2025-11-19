@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Ingredients\Schemas;
 
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 
 class IngredientForm
@@ -25,7 +26,17 @@ class IngredientForm
                     ->maxLength(50),
                 TextInput::make('reorder_level')
                     ->label('Batas Minimum')
-                    ->numeric()
+                    ->numeric(),
+                Select::make('category')
+                    ->label('Kategori')
+                    ->options([
+                        'bahan_utama' => 'Bahan Utama',
+                        'sayuran' => 'Bahan Sayuran',
+                        'saus_bumbu' => 'Saus dan Bumbu',
+                        'bahan_tambahan' => 'Bahan Pendukung',
+                        'kemasan' => 'Kemasan',
+                    ])
+                    ->required(),
             ]);
     }
 }

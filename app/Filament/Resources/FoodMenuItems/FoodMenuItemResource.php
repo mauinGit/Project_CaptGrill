@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Filament\Resources\FoodMenuItems;
+
+use App\Filament\Resources\FoodMenuItems\Pages\CreateFoodMenuItem;
+use App\Filament\Resources\FoodMenuItems\Pages\EditFoodMenuItem;
+use App\Filament\Resources\FoodMenuItems\Pages\ListFoodMenuItems;
+use App\Filament\Resources\FoodMenuItems\Schemas\FoodMenuItemForm;
+use App\Filament\Resources\FoodMenuItems\Tables\FoodMenuItemsTable;
+use App\Filament\Resources\MenuItems\Schemas\MenuItemForm;
+use App\Filament\Resources\MenuItems\Tables\MenuItemsTable;
+use App\Models\FoodMenuItem;
+use App\Models\MenuItem;
+use Illuminate\Database\Eloquent\Builder;
+use BackedEnum;
+use UnitEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+class FoodMenuItemResource extends Resource
+{
+    protected static ?string $model = MenuItem::class;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Detail Menu';
+
+    protected static ?string $navigationLabel = 'Makanan';
+    
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function form(Schema $schema): Schema
+    {
+         return MenuItemForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return MenuItemsTable::configure($table);
+    }
+
+    // 🔴 FILTER data hanya kategori makanan
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('category', 'makanan');
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\Resources\MenuItems\RelationManagers\IngredientsRelationManager::class
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListFoodMenuItems::route('/'),
+            'create' => CreateFoodMenuItem::route('/create'),
+            'edit' => EditFoodMenuItem::route('/{record}/edit'),
+        ];
+    }
+}
