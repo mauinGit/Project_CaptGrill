@@ -19,18 +19,25 @@ class ViewOrder extends ViewRecord
         return [
             EditAction::make(),
 
-            Action::make('print')
-                ->label('Print Invoice')
-                ->icon('heroicon-o-printer')
-                ->color('primary')
-                ->action(function (Order $record) {
-                    return response()->streamDownload(function () use ($record) {
-                        echo app('dompdf.wrapper')->loadView('pdf.order-invoice', [
+           Action::make('print')
+            ->label('Print Invoice')
+            ->icon('heroicon-o-printer')
+            ->color('primary')
+            ->action(function (Order $record) {
+                return response()->streamDownload(function () use ($record) {
+
+                    $pdf = app('dompdf.wrapper')
+                        ->loadView('pdf.order-invoice', [
                             'order' => $record,
                             'items' => $record->menuItems,
-                        ])->output();
-                    }, 'invoice-' . $record->id . '.pdf');
-                }),
+                        ])
+                        ->setPaper([0, 0, 300, 800], 'portrait');  
+                        // 162 pt = 58mm, height 800 pt agar muat
+
+                    echo $pdf->output();
+
+                }, 'struk-' . $record->order_code . '.pdf');
+            }),
         ];
     }
 }

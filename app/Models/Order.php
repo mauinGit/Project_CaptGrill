@@ -11,11 +11,14 @@ class Order extends Model
 
     protected $fillable = [
         'order_code',
-        'customer_name',
         'total_amount',
         'payment_method',
+        'customer_name',
         'quantity',
+        'cash_given',
+        'change_amount',
     ];
+
 
     protected static function booted()
     {

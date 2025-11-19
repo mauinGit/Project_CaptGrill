@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Orders\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Get;
 use Filament\Schemas\Schema;
 use App\Models\MenuItem;
 
@@ -94,20 +95,38 @@ class OrderForm
 
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set, $get) {
-                        
-                        // total amount
-                        $total = collect($get('items'))->sum('subtotal');
-                        $set('total_amount.order_items', $total);
 
-                        // total qty
-                        $qtyTotal = collect($get('items'))->sum('quantity');
-                        $set('quantity.order_items', $qtyTotal);
+                        $items = $get('items') ?? [];
+
+                        $total = collect($items)->sum('subtotal');
+                        $qtyTotal = collect($items)->sum('quantity');
+
+                        $set('../../total_amount', $total);
+                        $set('../../quantity', $qtyTotal);
                     }),
+                    
+                    TextInput::make('cash_given')
+                        ->label('Uang Diberikan')
+                        ->numeric()
+                        ->reactive()
+                        ->minValue(fn ($get) => $get('total_amount') ?? 0)
+                        ->afterStateUpdated(function ($state, callable $set, $get) {
 
-                // ===========================
-                // TOTAL (AUTO)
-                // ===========================
-            ])
+                            // Ambil total_amount yang sudah kamu hitung dari repeater
+                            $total = $get('total_amount') ?? 0;
+
+                            // Set kembalian
+                            $set('change_amount', max(0, $state - $total));
+                        })
+                        ->required(),
+
+                    TextInput::make('change_amount')
+                        ->label('Kembalian')
+                        ->numeric()
+                        ->disabled()
+                        ->dehydrated(),
+
+                                ])
             ->columns(2); // <-- biar layout rapi tanpa Section
     }
 }
