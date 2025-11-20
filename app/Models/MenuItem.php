@@ -17,7 +17,7 @@ class MenuItem extends Model
         'image',
     ];
 
-    public function ingredients()
+    public function ingredients() 
     {
         return $this->belongsToMany(Ingredient::class, 'menu_ingredients')
             ->withPivot(['quantity_used', 'unit'])

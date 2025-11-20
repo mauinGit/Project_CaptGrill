@@ -18,12 +18,11 @@ class Ingredient extends Model
     ];
 
     // 👇 Tambahkan ini agar Filament tahu kolom judul
-    protected static ?string $recordTitleAttribute = 'name';
-
-    public function menuItems()
-    {
+    protected static ?string $recordTitleAttribute = 'name'; 
+    
+    public function menuItems() {
         return $this->belongsToMany(MenuItem::class, 'menu_ingredients')
-            ->withPivot(['ingredient_id', 'quantity_used', 'unit'])
+            ->withPivot(['ingredient_id','quantity_used','unit'])
             ->withTimestamps();
     }
 }
