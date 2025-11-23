@@ -30,13 +30,15 @@ class IngredientForm
                 Select::make('category')
                     ->label('Kategori')
                     ->options([
-                        'bahan_utama' => 'Bahan Utama',
-                        'sayuran' => 'Bahan Sayuran',
-                        'saus_bumbu' => 'Saus dan Bumbu',
-                        'bahan_tambahan' => 'Bahan Pendukung',
-                        'kemasan' => 'Kemasan',
+                        'bahan_utama'     => 'Bahan Utama',
+                        'sayuran'         => 'Bahan Sayuran',
+                        'saus_bumbu'      => 'Saus dan Bumbu',
+                        'bahan_tambahan'  => 'Bahan Pendukung',
+                        'kemasan'         => 'Kemasan',
                     ])
-                    ->required(),
+                    ->required()
+                    ->searchable()
+                    ->native(false),
             ]);
     }
 }

@@ -40,47 +40,6 @@ class IngredientResource extends Resource
         ];
     }
 
-    public static function infolist(Schema $schema): Schema
-    {
-        return $schema
-            ->components([
-                TextEntry::make('name')
-                    ->label('Nama Bahan')
-                    ->columnSpanFull(),
-                TextEntry::make('stock')
-                    ->label('Stok')
-                    ->numeric(),
-                TextEntry::make('unit')
-                    ->label('Satuan'),
-                TextEntry::make('reorder_level')
-                    ->label('Status')
-                    ->formatStateUsing(function ($record) {
-                            if ($record->stock <= 0) {
-                                return '❌ Stock Habis';
-                            } elseif ($record->stock <= $record->reorder_level) {
-                                return '⚠️ Stock Mulai Menipis';
-                            } else {
-                                return '✅ Stock Aman';
-                            }
-                        })
-                        ->color(function ($record) {
-                            if ($record->stock <= 0) {
-                                return 'danger';
-                            } elseif ($record->stock <= $record->reorder_level) {
-                                return 'warning';
-                            } else {
-                                return 'success';  //
-                            }
-                        }),
-                TextEntry::make('created_at')
-                    ->label('Created At')
-                    ->dateTime('d M Y H:i'),
-                TextEntry::make('updated_at')   
-                    ->label('Updated At')
-                    ->dateTime('d M Y H:i'),
-            ]);
-    }
-
     public static function getLabel(): string
     {
         return 'Ingredient';

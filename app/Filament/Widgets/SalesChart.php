@@ -10,6 +10,8 @@ class SalesChart extends ChartWidget
 {
     protected ?string $heading = 'Grafik Penjualan per Tanggal';
 
+    protected static ?int $sort = 3;
+
     protected function getChartHeight(): ?string
     {
         return '100px'; // bebas: 300px, 400px, 600px, dll.

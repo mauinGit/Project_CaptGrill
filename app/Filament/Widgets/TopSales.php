@@ -14,6 +14,10 @@ class TopSales extends TableWidget
 {
     protected static ?string $heading = 'Top 5 Menu Terlaris';
 
+    protected static ?int $sort = 5;
+
+    protected int | string | array $columnSpan = 'full';
+
     public ?string $dateOption = 'today';
     public ?string $manualDate = null;
 
@@ -21,8 +25,6 @@ class TopSales extends TableWidget
     {
         return true;
     }
-
-    protected int|string|array $columnSpan = 'full';
 
     protected function getTableFilters(): array
     {

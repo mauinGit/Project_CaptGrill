@@ -21,6 +21,9 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\SalesChart;
 use App\Filament\Widgets\TopSales;
+use App\Filament\Widgets\FinanceLineChart;
+use App\Filament\Widgets\FinanceStats;
+use App\Filament\Widgets\ExportFinancialButton;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -40,13 +43,10 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
-
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 MenuOverview::class,
-                AccountWidget::class,
-                FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -67,8 +67,11 @@ class AdminPanelProvider extends PanelProvider
     protected function getWidgets(): array
     {
         return [
-            \App\Filament\Widgets\TopSales::class,
-            \App\Filament\Widgets\SalesChart::class,
+            FinanceStats::class,        // tampil paling atas
+            FinanceLineChart::class,    // bawahnya
+            SalesChart::class,          // grafik kedua
+            TopSales::class,            // tabel ranking penjualan
+            ExportFinancialButton::class,
         ];
     }
 }

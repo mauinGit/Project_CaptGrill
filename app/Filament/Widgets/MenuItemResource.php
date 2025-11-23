@@ -20,11 +20,14 @@ class MenuItemResource extends Resource
 {
     protected static ?string $model = MenuItem::class;
 
+    protected static ?int $sort = 1;
+
     protected static bool $shouldRegisterNavigation = false;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';
+
 
     public static function form(Schema $schema): Schema
     {
