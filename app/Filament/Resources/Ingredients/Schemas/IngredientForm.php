@@ -37,7 +37,6 @@ class IngredientForm
                         'kemasan'         => 'Kemasan',
                     ])
                     ->required()
-                    ->searchable()
                     ->native(false),
             ]);
     }

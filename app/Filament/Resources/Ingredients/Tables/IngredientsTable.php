@@ -9,6 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 
 class IngredientsTable
 {
@@ -26,6 +27,16 @@ class IngredientsTable
                 TextColumn::make('unit')
                     ->label('Satuan')
                     ->sortable(),
+                TextColumn::make('category')
+                    ->label('Kategori')
+                    ->badge()
+                    ->colors([
+                        'danger'   => 'bahan_utama',     
+                        'warning'  => 'sayuran',         // kuning
+                        'info'     => 'kemasan',         // biru
+                        'success'  => 'saus_bumbu',      // hijau
+                        'secondary'=> 'bahan_tambahan',  // ungu
+                    ]),
                 TextColumn::make('reorder_level')
                     ->label('Status')
                     ->sortable()
@@ -58,7 +69,15 @@ class IngredientsTable
 
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                    ->label('Filter Kategori')
+                    ->options([
+                        'bahan_utama' => 'Bahan Utama',
+                        'sayuran' => 'Sayuran',
+                        'saus_bumbu' => 'Saus & Bumbu',
+                        'bahan_tambahan' => 'Bahan Tambahan',
+                        'kemasan' => 'Kemasan',
+                    ]),
             ])
             ->recordActions([
                 ViewAction::make(),

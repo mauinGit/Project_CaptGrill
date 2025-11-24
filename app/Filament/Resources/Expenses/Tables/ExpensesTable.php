@@ -9,6 +9,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class ExpensesTable
@@ -50,7 +51,7 @@ class ExpensesTable
             ])
 
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
+                SelectFilter::make('category')
                     ->label('Filter Kategori')
                     ->options([
                         'gaji' => 'Gaji Karyawan',

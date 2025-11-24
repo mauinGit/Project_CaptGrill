@@ -54,7 +54,7 @@ class ExpenseForm
                                 })
                                 ->required(),
 
-                            Forms\Components\TextInput::make('bonus')
+                            TextInput::make('bonus')
                                 ->label('Bonus')
                                 ->numeric()
                                 ->default(0)
@@ -63,7 +63,7 @@ class ExpenseForm
                                     $set('subtotal', ($get('base_salary') ?? 0) + ($get('bonus') ?? 0));
                                 }),
 
-                            Forms\Components\TextInput::make('subtotal')
+                            TextInput::make('subtotal')
                                 ->label('Total')
                                 ->disabled()
                                 ->dehydrated()
