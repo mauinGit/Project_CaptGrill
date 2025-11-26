@@ -89,7 +89,7 @@
             <td class="item-price">Sub</td>
         </tr>
 
-        @foreach ($items as $item)
+        @foreach($order->menuItems as $item)
         <tr>
             <td class="item-name">{{ $item->name }}</td>
             <td class="item-qty">{{ $item->pivot->quantity }}</td>
