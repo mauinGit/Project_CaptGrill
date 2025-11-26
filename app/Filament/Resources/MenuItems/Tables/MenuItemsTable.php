@@ -36,6 +36,7 @@ class MenuItemsTable
                     ->sortable(),
                 ImageColumn::make('image')
                     ->label('Gambar Menu')
+                    ->disk('public')
                     ->square()
                     ->imageSize(100),
                 TextColumn::make('created_at')

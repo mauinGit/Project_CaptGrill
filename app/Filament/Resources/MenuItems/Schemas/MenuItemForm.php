@@ -29,7 +29,14 @@ class MenuItemForm
                     ])
                     ->required(),
                 FileUpload::make('image')
-                    ->label('Gambar Menu')
+                    ->label('Foto Menu')
+                    ->directory('menu')          // akan disimpan di storage/app/public/menu
+                    ->disk('public')             // gunakan disk public
+                    ->visibility('public')       // file bisa diakses browser
+                    ->image()                    // validasi gambar
+                    ->maxSize(2048)              // maksimal 2MB
+                    ->preserveFilenames()        // opsional — simpan nama asli
+
             ]);
     }
 }

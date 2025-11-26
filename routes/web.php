@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Exports\FinancialReportExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RiwayatPembelianController;
 
 Route::get('/', function () {
@@ -26,3 +27,10 @@ Route::get('/orders/{id}/details', [RiwayatPembelianController::class, 'getOrder
     ->name('orders.details');
 
 Route::get('/orders/{id}/download', [RiwayatPembelianController::class, 'downloadStruk'])->name('orders.struk.download');
+
+Route::get('/kasir', [OrdersController::class, 'index'])->name('kasir.index');
+
+Route::post('/kasir/transaksi', [OrdersController::class, 'store'])->name('kasir.store');
+
+Route::get('/kasir/menu/{id}', [OrdersController::class, 'detailMenu'])->name('kasir.menu.detail');
+

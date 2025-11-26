@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kasir - CAPT.grill</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: "#1a5939",
+                            secondary: "#ffde59",
+                        },
+                        fontFamily: {
+                            bitter: ["Bitter", "serif"],
+                        },
+                    },
+                },
+            };
+        </script>
+        <style>
+            .bitter-semibold {
+                font-family: "Bitter", serif;
+                font-weight: 600;
+            }
+            .bitter-bold {
+                font-family: "Bitter", serif;
+                font-weight: 700;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+            }
+            .overlay.active {
+                display: block;
+            }
+            @media (min-width: 1024px) {
+                .sidebar {
+                    transform: translateX(0);
+                }
+            }
+        </style>
+    </head>
+
+    <body class="bg-primary min-h-screen">
+        <!-- Mobile Menu Button -->
+        <button
+            class="mobile-menu-btn fixed top-4 left-4 z-50 bg-secondary p-3 rounded-lg shadow-lg lg:hidden"
+        >
+            <svg
+                class="w-6 h-6 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+            </svg>
+        </button>
+
+        <!-- Overlay for mobile -->
+        <div class="overlay"></div>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside
+                class="sidebar fixed lg:static w-64 bg-secondary p-6 min-h-screen z-40"
+            >
+                <!-- Close button for mobile -->
+                <button
+                    class="close-btn absolute top-4 right-4 text-primary lg:hidden"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                        ></path>
+                    </svg>
+                </button>
+
+                <!-- Logo -->
+                <div class="text-center mb-8 mt-8 lg:mt-0">
+                    <img
+                        src="logo.png"
+                        class="w-50 h-auto mx-auto"
+                        alt="Kasiram"
+                    />
+                </div>
+
+                <!-- Navigation -->
+                <nav class="text-primary space-y-2">
+                    <div
+                        class="bg-primary text-secondary px-4 py-3 rounded-xl font-semibold bitter-semibold text-lg"
+                    >
+                        Kasir
+                    </div>
+                    <a
+                        href="riwayat-pembelian.html"
+                        class="sidebar-btn block w-full text-left px-4 py-3 rounded-xl bitter-semibold text-lg hover:bg-primary hover:bg-opacity-10 transition-colors duration-300"
+                    >
+                        Riwayat Pembelian
+                    </a>
+                </nav>
+
+                <!-- Logout -->
+                <div class="mt-8 text-center">
+                    <a
+                        href="login.html"
+                        class="text-primary hover:text-green-800 font-semibold bitter-semibold text-lg transition-colors duration-300"
+                    >
+                        Logout
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-4 lg:p-8 min-h-screen">
+                <!-- Header -->
+                <div class="bg-secondary rounded-2xl p-6 shadow-xl mb-8">
+                    <h1
+                        class="text-primary font-bold text-2xl lg:text-4xl bitter-bold"
+                    >
+                        Kasir
+                    </h1>
+                </div>
+
+                <!-- Date dan Tombol Aksi -->
+                <div
+                    class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8"
+                >
+                    <!-- Tanggal -->
+                    <div class="flex-1">
+                        <p
+                            class="text-secondary text-xl lg:text-2xl font-semibold bitter-semibold"
+                        >
+                            Tanggal:
+                            <span
+                                id="current-date"
+                                class="bg-secondary bg-opacity-20 px-4 py-2 rounded-xl"
+                                >16 Januari 2025</span
+                            >
+                        </p>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="flex flex-wrap gap-2">
+                        <!-- Tombol Cetak Struk dihapus sesuai permintaan -->
+                    </div>
+                </div>
+
+                <!-- Menu Items -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"
+                >
+                    <!-- Kebab -->
+                    <div
+                        class="stats-card bg-secondary rounded-2xl shadow-lg p-6 transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+                    >
+                        <p
+                            class="text-primary font-semibold text-xl bitter-semibold"
+                        >
+                            Kebab
+                        </p>
+                        <p
+                            class="text-primary font-bold text-3xl lg:text-5xl mt-4 bitter-bold"
+                        >
+                            Rp17.000
+                        </p>
+                        <div class="mt-4 flex justify-end items-center">
+                            <div class="flex items-center space-x-3">
+                                <button
+                                    class="decrease-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Kebab"
+                                >
+                                    -
+                                </button>
+                                <span
+                                    id="Kebab-quantity"
+                                    class="text-primary font-bold text-xl"
+                                    >0</span
+                                >
+                                <button
+                                    class="increase-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Kebab"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sloppy Sandwich -->
+                    <div
+                        class="stats-card bg-secondary rounded-2xl shadow-lg p-6 transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+                    >
+                        <p
+                            class="text-primary font-semibold text-xl bitter-semibold"
+                        >
+                            Sloppy Sandwich
+                        </p>
+                        <p
+                            class="text-primary font-bold text-3xl lg:text-5xl mt-4 bitter-bold"
+                        >
+                            Rp17.000
+                        </p>
+                        <div class="mt-4 flex justify-end items-center">
+                            <div class="flex items-center space-x-3">
+                                <button
+                                    class="decrease-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Sloppy Sandwich"
+                                >
+                                    -
+                                </button>
+                                <span
+                                    id="Sloppy Sandwich-quantity"
+                                    class="text-primary font-bold text-xl"
+                                    >0</span
+                                >
+                                <button
+                                    class="increase-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Sloppy Sandwich"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bakso Bakar -->
+                    <div
+                        class="stats-card bg-secondary rounded-2xl shadow-lg p-6 transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+                    >
+                        <p
+                            class="text-primary font-semibold text-xl bitter-semibold"
+                        >
+                            Bakso Bakar
+                        </p>
+                        <p
+                            class="text-primary font-bold text-3xl lg:text-5xl mt-4 bitter-bold"
+                        >
+                            Rp17.000
+                        </p>
+                        <div class="mt-4 flex justify-end items-center">
+                            <div class="flex items-center space-x-3">
+                                <button
+                                    class="decrease-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Bakso Bakar"
+                                >
+                                    -
+                                </button>
+                                <span
+                                    id="Bakso Bakar-quantity"
+                                    class="text-primary font-bold text-xl"
+                                    >0</span
+                                >
+                                <button
+                                    class="increase-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Bakso Bakar"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Burger -->
+                    <div
+                        class="stats-card bg-secondary rounded-2xl shadow-lg p-6 transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+                    >
+                        <p
+                            class="text-primary font-semibold text-xl bitter-semibold"
+                        >
+                            Burger
+                        </p>
+                        <p
+                            class="text-primary font-bold text-3xl lg:text-5xl mt-4 bitter-bold"
+                        >
+                            Rp17.000
+                        </p>
+                        <div class="mt-4 flex justify-end items-center">
+                            <div class="flex items-center space-x-3">
+                                <button
+                                    class="decrease-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Burger"
+                                >
+                                    -
+                                </button>
+                                <span
+                                    id="Burger-quantity"
+                                    class="text-primary font-bold text-xl"
+                                    >0</span
+                                >
+                                <button
+                                    class="increase-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Burger"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lemonade Blast -->
+                    <div
+                        class="stats-card bg-secondary rounded-2xl shadow-lg p-6 transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+                    >
+                        <p
+                            class="text-primary font-semibold text-xl bitter-semibold"
+                        >
+                            Lemonade Blast
+                        </p>
+                        <p
+                            class="text-primary font-bold text-3xl lg:text-5xl mt-4 bitter-bold"
+                        >
+                            Rp5.000
+                        </p>
+                        <div class="mt-4 flex justify-end items-center">
+                            <div class="flex items-center space-x-3">
+                                <button
+                                    class="decrease-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Lemonade Blast"
+                                >
+                                    -
+                                </button>
+                                <span
+                                    id="Lemonade Blast-quantity"
+                                    class="text-primary font-bold text-xl"
+                                    >0</span
+                                >
+                                <button
+                                    class="increase-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Lemonade Blast"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hotdog -->
+                    <div
+                        class="stats-card bg-secondary rounded-2xl shadow-lg p-6 transition-all duration-300 hover:translate-y-[-5px] hover:shadow-2xl"
+                    >
+                        <p
+                            class="text-primary font-semibold text-xl bitter-semibold"
+                        >
+                            Hotdog
+                        </p>
+                        <p
+                            class="text-primary font-bold text-3xl lg:text-5xl mt-4 bitter-bold"
+                        >
+                            Rp17.000
+                        </p>
+                        <div class="mt-4 flex justify-end items-center">
+                            <div class="flex items-center space-x-3">
+                                <button
+                                    class="decrease-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Hotdog"
+                                >
+                                    -
+                                </button>
+                                <span
+                                    id="Hotdog-quantity"
+                                    class="text-primary font-bold text-xl"
+                                    >0</span
+                                >
+                                <button
+                                    class="increase-btn bg-primary text-secondary w-8 h-8 rounded-full flex items-center justify-center font-bold hover:bg-green-800 transition-colors duration-300"
+                                    data-name="Hotdog"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="bg-secondary rounded-2xl shadow-lg p-6 mb-8">
+                    <h2
+                        class="text-primary text-2xl lg:text-3xl font-bold mb-6 bitter-bold"
+                    >
+                        Ringkasan Pesanan
+                    </h2>
+
+                    <div id="order-summary" class="space-y-4 mb-6">
+                        <div class="text-center text-primary py-4">
+                            Belum ada pesanan
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div
+                        class="flex justify-between items-center border-t-2 border-primary pt-4"
+                    >
+                        <p class="text-primary font-bold text-2xl bitter-bold">
+                            Total
+                        </p>
+                        <p
+                            id="total-price"
+                            class="text-primary font-bold text-3xl bitter-bold"
+                        >
+                            Rp0
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                        <button
+                            id="pay-btn"
+                            class="bg-primary text-secondary px-6 py-3 rounded-xl font-bold text-lg bitter-semibold hover:bg-green-800 transition-colors duration-300 flex-1"
+                        >
+                            Bayar Sekarang
+                        </button>
+                        <button
+                            id="reset-btn"
+                            class="bg-white text-primary border-2 border-primary px-6 py-3 rounded-xl font-bold text-lg bitter-semibold hover:bg-gray-100 transition-colors duration-300 flex-1"
+                        >
+                            Reset Pesanan
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Payment Modal -->
+        <div
+            id="payment-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+        >
+            <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+                <h2
+                    class="text-2xl font-bold text-primary mb-6 text-center bitter-bold"
+                >
+                    Pembayaran
+                </h2>
+
+                <div class="space-y-4 mb-6">
+                    <!-- Detail Pesanan -->
+                    <div
+                        id="modal-order-details"
+                        class="bg-gray-50 rounded-xl p-4 max-h-40 overflow-y-auto"
+                    >
+                        <!-- Detail pesanan akan ditampilkan di sini -->
+                    </div>
+
+                    <!-- Total Belanja -->
+                    <div
+                        class="flex justify-between items-center bg-secondary bg-opacity-20 p-4 rounded-xl"
+                    >
+                        <span class="text-primary font-semibold text-lg"
+                            >Total Belanja</span
+                        >
+                        <span
+                            id="modal-total"
+                            class="text-primary font-bold text-xl"
+                            >Rp0</span
+                        >
+                    </div>
+
+                    <!-- Kembalian -->
+                    <div
+                        class="flex justify-between items-center bg-secondary bg-opacity-20 p-4 rounded-xl"
+                    >
+                        <span class="text-primary font-semibold text-lg"
+                            >Kembalian</span
+                        >
+                        <span
+                            id="modal-change"
+                            class="text-primary font-bold text-xl"
+                            >Rp0</span
+                        >
+                    </div>
+
+                    <!-- Form Input -->
+                    <div class="space-y-4 pt-4">
+                        <!-- Nama Customer -->
+                        <div>
+                            <label
+                                class="block text-primary font-semibold mb-2 text-lg"
+                                >Nama Customer</label
+                            >
+                            <input
+                                type="text"
+                                id="customer-name"
+                                class="w-full p-3 border-2 border-primary border-opacity-30 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-colors duration-300"
+                                placeholder="Masukkan nama customer"
+                                inputmode="text"
+                            />
+                        </div>
+
+                        <!-- Nominal Bayar -->
+                        <div>
+                            <label
+                                class="block text-primary font-semibold mb-2 text-lg"
+                                >Nominal Bayar</label
+                            >
+                            <input
+                                type="number"
+                                id="payment-amount"
+                                class="w-full p-3 border-2 border-primary border-opacity-30 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-colors duration-300"
+                                placeholder="Masukkan nominal bayar"
+                                min="0"
+                                inputmode="numeric"
+                                pattern="[0-9]*"
+                            />
+                        </div>
+
+                        <!-- Metode Pembayaran -->
+                        <div>
+                            <label
+                                class="block text-primary font-semibold mb-2 text-lg"
+                                >Metode Pembayaran</label
+                            >
+                            <div class="grid grid-cols-3 gap-2">
+                                <button
+                                    class="payment-method border-2 border-primary border-opacity-30 p-3 rounded-xl text-primary font-semibold hover:bg-primary hover:text-secondary transition-colors duration-300"
+                                    data-method="CASH"
+                                >
+                                    Tunai
+                                </button>
+                                <button
+                                    class="payment-method border-2 border-primary border-opacity-30 p-3 rounded-xl text-primary font-semibold hover:bg-primary hover:text-secondary transition-colors duration-300"
+                                    data-method="QRIS"
+                                >
+                                    QRIS
+                                </button>
+                                <button
+                                    class="payment-method border-2 border-primary border-opacity-30 p-3 rounded-xl text-primary font-semibold hover:bg-primary hover:text-secondary transition-colors duration-300"
+                                    data-method="Grab"
+                                >
+                                    Grab
+                                </button>
+                            </div>
+                            <input
+                                type="hidden"
+                                id="selected-payment-method"
+                                value=""
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4">
+                    <button
+                        id="cancel-payment"
+                        class="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-bold text-lg hover:bg-gray-400 transition-colors duration-300"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        id="confirm-payment"
+                        class="flex-1 bg-primary text-secondary px-6 py-3 rounded-xl font-bold text-lg hover:bg-green-800 transition-colors duration-300"
+                    >
+                        Cetak dan Kirim Struk (WA)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipt Preview Modal -->
+        <div
+            id="receipt-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+        >
+            <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+                <h2
+                    class="text-2xl font-bold text-primary mb-6 text-center bitter-bold"
+                >
+                    Preview Struk
+                </h2>
+
+                <div
+                    id="receipt-content"
+                    class="bg-white border-2 border-gray-300 p-4 rounded-lg mb-6 font-mono text-sm"
+                >
+                    <!-- Struk akan ditampilkan di sini -->
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4">
+                    <button
+                        id="close-receipt"
+                        class="flex-1 bg-gray-300 text-gray-700 px-6 py-3 rounded-xl font-bold text-lg hover:bg-gray-400 transition-colors duration-300"
+                    >
+                        Tutup
+                    </button>
+                    <button
+                        id="send-whatsapp"
+                        class="flex-1 bg-green-600 text-white px-6 py-3 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors duration-300"
+                    >
+                        Kirim ke WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Mobile menu functionality
+            document.addEventListener("DOMContentLoaded", function () {
+                const mobileMenuBtn =
+                    document.querySelector(".mobile-menu-btn");
+                const sidebar = document.querySelector(".sidebar");
+                const overlay = document.querySelector(".overlay");
+                const closeBtn = document.querySelector(".close-btn");
+
+                // Open sidebar
+                mobileMenuBtn.addEventListener("click", function () {
+                    sidebar.classList.add("active");
+                    overlay.classList.add("active");
+                });
+
+                // Close sidebar
+                closeBtn.addEventListener("click", function () {
+                    sidebar.classList.remove("active");
+                    overlay.classList.remove("active");
+                });
+
+                // Close sidebar with overlay
+                overlay.addEventListener("click", function () {
+                    sidebar.classList.remove("active");
+                    overlay.classList.remove("active");
+                });
+
+                // Close sidebar when clicking navigation links on mobile
+                const navLinks = document.querySelectorAll(".sidebar a");
+                navLinks.forEach((link) => {
+                    link.addEventListener("click", function () {
+                        if (window.innerWidth < 1024) {
+                            sidebar.classList.remove("active");
+                            overlay.classList.remove("active");
+                        }
+                    });
+                });
+
+                // Set current date
+                const currentDate = new Date();
+                const options = {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                };
+                document.getElementById("current-date").textContent =
+                    currentDate.toLocaleDateString("id-ID", options);
+
+                // Order management functionality
+                const order = {};
+
+                // Increase quantity functionality
+                document.querySelectorAll(".increase-btn").forEach((button) => {
+                    button.addEventListener("click", function () {
+                        const name = this.getAttribute("data-name");
+
+                        if (!order[name]) {
+                            const priceElement =
+                                this.closest(".stats-card").querySelector(
+                                    ".bitter-bold"
+                                );
+                            const priceText = priceElement.textContent
+                                .replace("Rp", "")
+                                .replace(/\./g, "");
+                            const price = parseInt(priceText);
+
+                            order[name] = {
+                                quantity: 0,
+                                price: price,
+                            };
+                        }
+
+                        order[name].quantity++;
+                        updateQuantityDisplay(name);
+                        updateOrderSummary();
+                    });
+                });
+
+                // Decrease quantity functionality
+                document.querySelectorAll(".decrease-btn").forEach((button) => {
+                    button.addEventListener("click", function () {
+                        const name = this.getAttribute("data-name");
+
+                        if (order[name] && order[name].quantity > 0) {
+                            order[name].quantity--;
+
+                            if (order[name].quantity === 0) {
+                                delete order[name];
+                            }
+
+                            updateQuantityDisplay(name);
+                            updateOrderSummary();
+                        }
+                    });
+                });
+
+                // Reset order functionality
+                document
+                    .getElementById("reset-btn")
+                    .addEventListener("click", function () {
+                        // Clear all quantities
+                        for (const name in order) {
+                            delete order[name];
+                        }
+
+                        // Reset all quantity displays
+                        document
+                            .querySelectorAll('[id$="-quantity"]')
+                            .forEach((span) => {
+                                span.textContent = "0";
+                            });
+
+                        updateOrderSummary();
+                    });
+
+                // Payment method selection
+                document
+                    .querySelectorAll(".payment-method")
+                    .forEach((button) => {
+                        button.addEventListener("click", function () {
+                            // Remove selected class from all buttons
+                            document
+                                .querySelectorAll(".payment-method")
+                                .forEach((btn) => {
+                                    btn.classList.remove(
+                                        "selected",
+                                        "bg-primary",
+                                        "text-secondary"
+                                    );
+                                    btn.classList.add(
+                                        "border-primary",
+                                        "border-opacity-30",
+                                        "text-primary"
+                                    );
+                                });
+
+                            // Add selected class to clicked button
+                            this.classList.add("bg-primary", "text-secondary");
+                            this.classList.remove(
+                                "border-primary",
+                                "border-opacity-30",
+                                "text-primary"
+                            );
+
+                            // Set the selected payment method
+                            const method = this.getAttribute("data-method");
+                            document.getElementById(
+                                "selected-payment-method"
+                            ).value = method;
+                        });
+                    });
+
+                // Pay functionality - show modal
+                document
+                    .getElementById("pay-btn")
+                    .addEventListener("click", function () {
+                        if (Object.keys(order).length === 0) {
+                            alert("Tidak ada pesanan untuk dibayar!");
+                            return;
+                        }
+
+                        const total = calculateTotal();
+                        document.getElementById(
+                            "modal-total"
+                        ).textContent = `Rp${total.toLocaleString("id-ID")}`;
+                        document
+                            .getElementById("payment-modal")
+                            .classList.remove("hidden");
+
+                        // Update detail pesanan di modal
+                        updateModalOrderDetails();
+
+                        // Reset payment form
+                        document.getElementById("customer-name").value = "";
+                        document.getElementById("payment-amount").value = "";
+                        document.getElementById(
+                            "selected-payment-method"
+                        ).value = "";
+                        document.getElementById("modal-change").textContent =
+                            "Rp0";
+
+                        // Reset payment method buttons
+                        document
+                            .querySelectorAll(".payment-method")
+                            .forEach((btn) => {
+                                btn.classList.remove(
+                                    "bg-primary",
+                                    "text-secondary"
+                                );
+                                btn.classList.add(
+                                    "border-primary",
+                                    "border-opacity-30",
+                                    "text-primary"
+                                );
+                            });
+
+                        // Auto focus on customer name input
+                        setTimeout(() => {
+                            document.getElementById("customer-name").focus();
+                        }, 300);
+                    });
+
+                // Calculate change when payment amount changes
+                document
+                    .getElementById("payment-amount")
+                    .addEventListener("input", function () {
+                        const total = calculateTotal();
+                        const paymentAmount = parseInt(this.value) || 0;
+                        const change = paymentAmount - total;
+
+                        if (change >= 0) {
+                            document.getElementById(
+                                "modal-change"
+                            ).textContent = `Rp${change.toLocaleString(
+                                "id-ID"
+                            )}`;
+                        } else {
+                            document.getElementById(
+                                "modal-change"
+                            ).textContent = "Rp0";
+                        }
+                    });
+
+                // Cancel payment
+                document
+                    .getElementById("cancel-payment")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("payment-modal")
+                            .classList.add("hidden");
+                    });
+
+                // Confirm payment
+                document
+                    .getElementById("confirm-payment")
+                    .addEventListener("click", function () {
+                        const customerName =
+                            document.getElementById("customer-name").value;
+                        const paymentAmount =
+                            parseInt(
+                                document.getElementById("payment-amount").value
+                            ) || 0;
+                        const paymentMethod = document.getElementById(
+                            "selected-payment-method"
+                        ).value;
+                        const total = calculateTotal();
+
+                        if (!customerName) {
+                            alert("Harap masukkan nama customer!");
+                            return;
+                        }
+
+                        if (!paymentMethod) {
+                            alert("Harap pilih metode pembayaran!");
+                            return;
+                        }
+
+                        if (paymentAmount < total) {
+                            alert("Nominal bayar kurang dari total belanja!");
+                            return;
+                        }
+
+                        // Generate receipt
+                        generateReceipt(
+                            customerName,
+                            paymentAmount,
+                            paymentMethod,
+                            total
+                        );
+
+                        // Show receipt preview modal
+                        document
+                            .getElementById("payment-modal")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("receipt-modal")
+                            .classList.remove("hidden");
+                    });
+
+                // Close receipt preview
+                document
+                    .getElementById("close-receipt")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("receipt-modal")
+                            .classList.add("hidden");
+
+                        // Reset order after successful payment
+                        for (const name in order) {
+                            delete order[name];
+                        }
+
+                        // Reset all quantity displays
+                        document
+                            .querySelectorAll('[id$="-quantity"]')
+                            .forEach((span) => {
+                                span.textContent = "0";
+                            });
+
+                        updateOrderSummary();
+                    });
+
+                // Send to WhatsApp
+                document
+                    .getElementById("send-whatsapp")
+                    .addEventListener("click", function () {
+                        const receiptContent =
+                            document.getElementById(
+                                "receipt-content"
+                            ).textContent;
+                        const encodedReceipt =
+                            encodeURIComponent(receiptContent);
+                        const whatsappUrl = `https://wa.me/?text=${encodedReceipt}`;
+
+                        // Open WhatsApp in new tab
+                        window.open(whatsappUrl, "_blank");
+
+                        // Close receipt modal
+                        document
+                            .getElementById("receipt-modal")
+                            .classList.add("hidden");
+
+                        // Reset order after successful payment
+                        for (const name in order) {
+                            delete order[name];
+                        }
+
+                        // Reset all quantity displays
+                        document
+                            .querySelectorAll('[id$="-quantity"]')
+                            .forEach((span) => {
+                                span.textContent = "0";
+                            });
+
+                        updateOrderSummary();
+                    });
+
+                // Update quantity display
+                function updateQuantityDisplay(name) {
+                    const quantityElement = document.getElementById(
+                        `${name}-quantity`
+                    );
+                    if (quantityElement) {
+                        quantityElement.textContent = order[name]
+                            ? order[name].quantity
+                            : 0;
+                    }
+                }
+
+                // Update order summary
+                function updateOrderSummary() {
+                    const orderSummary =
+                        document.getElementById("order-summary");
+                    const totalElement = document.getElementById("total-price");
+
+                    // Clear current summary
+                    orderSummary.innerHTML = "";
+
+                    // Calculate total
+                    let total = 0;
+
+                    // Add items to summary
+                    for (const name in order) {
+                        if (order[name].quantity > 0) {
+                            const itemTotal =
+                                order[name].quantity * order[name].price;
+                            total += itemTotal;
+
+                            const itemElement = document.createElement("div");
+                            itemElement.className =
+                                "flex justify-between items-center bg-white rounded-xl p-4";
+                            itemElement.innerHTML = `
+              <div>
+                <p class="text-primary font-bold text-lg bitter-semibold">${name}</p>
+                <p class="text-primary text-sm">Rp${order[
+                    name
+                ].price.toLocaleString("id-ID")} x ${order[name].quantity}</p>
+              </div>
+              <p class="text-primary font-bold text-xl bitter-bold">Rp${itemTotal.toLocaleString(
+                  "id-ID"
+              )}</p>
+            `;
+
+                            orderSummary.appendChild(itemElement);
+                        }
+                    }
+
+                    // If no items, show message
+                    if (Object.keys(order).length === 0 || total === 0) {
+                        orderSummary.innerHTML =
+                            '<div class="text-center text-primary py-4">Belum ada pesanan</div>';
+                    }
+
+                    // Update total
+                    totalElement.textContent = `Rp${total.toLocaleString(
+                        "id-ID"
+                    )}`;
+                }
+
+                // Update modal order details
+                function updateModalOrderDetails() {
+                    const modalOrderDetails = document.getElementById(
+                        "modal-order-details"
+                    );
+
+                    // Clear current details
+                    modalOrderDetails.innerHTML = "";
+
+                    // Add items to modal details
+                    for (const name in order) {
+                        if (order[name].quantity > 0) {
+                            const itemTotal =
+                                order[name].quantity * order[name].price;
+
+                            const itemElement = document.createElement("div");
+                            itemElement.className =
+                                "flex justify-between items-center py-2 border-b border-gray-200 last:border-b-0";
+                            itemElement.innerHTML = `
+              <div class="flex-1">
+                <p class="text-primary font-semibold text-sm">${name}</p>
+                <p class="text-primary text-xs">${
+                    order[name].quantity
+                } x Rp${order[name].price.toLocaleString("id-ID")}</p>
+              </div>
+              <p class="text-primary font-bold text-sm">Rp${itemTotal.toLocaleString(
+                  "id-ID"
+              )}</p>
+            `;
+
+                            modalOrderDetails.appendChild(itemElement);
+                        }
+                    }
+
+                    // If no items, show message
+                    if (Object.keys(order).length === 0) {
+                        modalOrderDetails.innerHTML =
+                            '<p class="text-center text-gray-500 py-2">Tidak ada pesanan</p>';
+                    }
+                }
+
+                // Calculate total
+                function calculateTotal() {
+                    let total = 0;
+                    for (const name in order) {
+                        total += order[name].quantity * order[name].price;
+                    }
+                    return total;
+                }
+
+                // Generate receipt
+                function generateReceipt(
+                    customerName,
+                    paymentAmount,
+                    paymentMethod,
+                    total
+                ) {
+                    const receiptContent =
+                        document.getElementById("receipt-content");
+                    const now = new Date();
+                    const orderNumber = `ORD-${now.getFullYear()}${String(
+                        now.getMonth() + 1
+                    ).padStart(2, "0")}${String(now.getDate()).padStart(
+                        2,
+                        "0"
+                    )}-${String(Math.floor(Math.random() * 1000)).padStart(
+                        3,
+                        "0"
+                    )}`;
+
+                    let receiptHTML = `
+          <div class="text-center mb-4">
+            <h3 class="font-bold text-lg">CAPT.grill</h3>
+            <p class="text-xs">Jl. Nusantara Gg. Buntu, Timbangan,</p>
+            <p class="text-xs">Indralaya Utara, Ogan Ilir 30862</p>
+            <p class="text-xs">Jam Operasional: 10.00 - 22.00 WIB</p>
+            <p class="text-xs">Hotline / WA: 0812-3456-7890</p>
+          </div>
+          <div class="border-t border-dashed border-gray-400 my-2"></div>
+          <div class="flex justify-between text-xs mb-2">
+            <span>No. Order</span>
+            <span>${orderNumber}</span>
+          </div>
+          <div class="flex justify-between text-xs mb-2">
+            <span>Tanggal</span>
+            <span>${now.getDate()} ${now.toLocaleString("id-ID", {
+                        month: "short",
+                    })} ${now.getFullYear()} ${String(now.getHours()).padStart(
+                        2,
+                        "0"
+                    )}:${String(now.getMinutes()).padStart(2, "0")}</span>
+          </div>
+          <div class="flex justify-between text-xs mb-2">
+            <span>Pelanggan</span>
+            <span>${customerName}</span>
+          </div>
+          <div class="flex justify-between text-xs mb-4">
+            <span>Metode</span>
+            <span>${paymentMethod}</span>
+          </div>
+          <div class="border-t border-dashed border-gray-400 my-2"></div>
+          <div class="mb-4">
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span>Menu</span>
+              <span>Qty</span>
+              <span>Sub</span>
+            </div>
+        `;
+
+                    // Add order items
+                    for (const name in order) {
+                        if (order[name].quantity > 0) {
+                            const itemTotal =
+                                order[name].quantity * order[name].price;
+                            receiptHTML += `
+              <div class="flex justify-between text-xs mb-1">
+                <span class="flex-1">${name}</span>
+                <span class="w-8 text-right">${order[name].quantity}</span>
+                <span class="w-16 text-right">${itemTotal.toLocaleString(
+                    "id-ID"
+                )}</span>
+              </div>
+            `;
+                        }
+                    }
+
+                    receiptContent.innerHTML = receiptHTML;
+                }
+            });
+        </script>
+    </body>
+</html>
