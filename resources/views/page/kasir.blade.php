@@ -18,8 +18,8 @@
             </div>
             <div>
                 <h1 class="text-primary font-bitter font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-                    Riwayat Pembelian</h1>
-                <p class="text-gray-600 text-xs sm:text-sm md:text-base mt-0.5 sm:mt-1">Kelola dan pantau transaksi Anda
+                    Kasir</h1>
+                <p class="text-gray-600 text-xs sm:text-sm md:text-base mt-0.5 sm:mt-1">Harap Mengisi dengan Benar
                 </p>
             </div>
         </div>
@@ -90,7 +90,7 @@
                     </span>
                 </h2>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
                     @foreach ($makanan as $item)
                         <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:scale-[1.02] cursor-pointer p-3 flex flex-col"
                             onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})">
@@ -127,7 +127,7 @@
                     </span>
                 </h2>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
                     @foreach ($minuman as $item)
                         <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:scale-[1.02] cursor-pointer p-3 flex flex-col"
                             onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})">
@@ -188,9 +188,9 @@
                     <label class="block text-gray-700 mb-1">Metode Pembayaran</label>
                     <select id="payment_method"
                         class="w-full border rounded-lg px-3 py-2 focus:ring-primary focus:border-primary">
-                        <option value="cash">Cash</option>
-                        <option value="qris">QRIS</option>
-                        <option value="debit">Debit</option>
+                        @foreach ($paymentMethods as $method)
+                            <option value="{{ $method }}">{{ strtoupper($method) }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -213,6 +213,24 @@
                 Proses & Cetak Struk
             </button>
         </div>
+
+        <div id="confirm-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-xl p-6 w-96">
+                <h2 class="text-lg font-bold mb-3">Konfirmasi Pesanan</h2>
+
+                <div id="confirm-items" class="space-y-1 text-sm mb-3"></div>
+
+                <p class="text-sm"><b>Total:</b> <span id="confirm-total"></span></p>
+                <p class="text-sm"><b>Uang diterima:</b> <span id="confirm-cash"></span></p>
+                <p class="text-sm mb-4"><b>Kembalian:</b> <span id="confirm-change"></span></p>
+
+                <div class="flex justify-end gap-2">
+                    <button id="cancel-btn" class="px-3 py-1 rounded bg-gray-300">Batal</button>
+                    <button id="confirm-btn" class="px-3 py-1 rounded bg-green-600 text-white">Konfirmasi</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -242,18 +260,18 @@
                     div.className = 'flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2';
 
                     div.innerHTML = `
-                    <div class="flex-1">
-                        <p class="font-semibold text-sm text-gray-900">${item.name}</p>
-                        <p class="text-xs text-gray-500">${item.quantity} x ${formatRupiah(item.price)}</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input type="number" min="1" value="${item.quantity}"
-                            class="w-14 border rounded-lg px-1 py-1 text-sm"
-                            onchange="updateQty(${index}, this.value)">
-                        <p class="font-semibold text-sm text-primary">${formatRupiah(item.quantity * item.price)}</p>
-                        <button class="text-red-500 text-xs" onclick="removeItem(${index})">✕</button>
-                    </div>
-                `;
+                <div class="flex-1">
+                    <p class="font-semibold text-sm text-gray-900">${item.name}</p>
+                    <p class="text-xs text-gray-500">${item.quantity} x ${formatRupiah(item.price)}</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" min="1" value="${item.quantity}"
+                        class="w-14 border rounded-lg px-1 py-1 text-sm"
+                        onchange="updateQty(${index}, this.value)">
+                    <p class="font-semibold text-sm text-primary">${formatRupiah(item.quantity * item.price)}</p>
+                    <button class="text-red-500 text-xs" onclick="removeItem(${index})">✕</button>
+                </div>
+            `;
 
                     cartItemsDiv.appendChild(div);
                 });
@@ -264,19 +282,15 @@
 
         function updateTotal() {
             let subtotal = 0;
-            cart.forEach(item => {
-                subtotal += item.price * item.quantity;
-            });
+            cart.forEach(item => subtotal += item.price * item.quantity);
 
             document.getElementById('subtotal-text').textContent = formatRupiah(subtotal);
             document.getElementById('total-text').textContent = formatRupiah(subtotal);
 
-            // update kembalian kalau uang sudah diisi
             const cash = Number(document.getElementById('cash_given').value || 0);
             const change = Math.max(cash - subtotal, 0);
             document.getElementById('change_amount').value = formatRupiah(change);
 
-            // enable/disable tombol
             document.getElementById('btn-proses').disabled = (cart.length === 0 || subtotal === 0);
         }
 
@@ -311,30 +325,51 @@
             updateTotal();
         });
 
+        /* ===============================
+           BUTTON PROSES -> HANYA TAMPILKAN POPUP
+        =================================*/
         document.getElementById('btn-proses').addEventListener('click', () => {
             if (cart.length === 0) {
                 alert('Keranjang masih kosong');
                 return;
             }
 
+            let subtotal = 0;
+            cart.forEach(item => subtotal += item.price * item.quantity);
+
             const customer_name = document.getElementById('customer_name').value;
             const payment_method = document.getElementById('payment_method').value;
             const cash_given = Number(document.getElementById('cash_given').value || 0);
+            const change_amount = Math.max(cash_given - subtotal, 0);
+
+            // Tampilkan ke modal
+            let html = '';
+            cart.forEach(item => {
+                html +=
+                    `<p>${item.quantity} x ${item.name} = ${formatRupiah(item.price * item.quantity)}</p>`;
+            });
+
+            document.getElementById('confirm-items').innerHTML = html;
+            document.getElementById('confirm-total').textContent = formatRupiah(subtotal);
+            document.getElementById('confirm-cash').textContent = formatRupiah(cash_given);
+            document.getElementById('confirm-change').textContent = formatRupiah(change_amount);
+
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        });
+
+        /* ===============================
+           BUTTON CONFIRM -> KIRIM KE DB
+        =================================*/
+        document.getElementById('confirm-btn').addEventListener('click', () => {
 
             let subtotal = 0;
             cart.forEach(item => subtotal += item.price * item.quantity);
-            const change_amount = Math.max(cash_given - subtotal, 0);
-
-            if (payment_method === 'cash' && cash_given < subtotal) {
-                alert('Uang diterima kurang dari total.');
-                return;
-            }
 
             const payload = {
-                customer_name,
-                payment_method,
-                cash_given,
-                change_amount,
+                customer_name: document.getElementById('customer_name').value,
+                payment_method: document.getElementById('payment_method').value,
+                cash_given: Number(document.getElementById('cash_given').value || 0),
+                change_amount: Math.max(Number(document.getElementById('cash_given').value || 0) - subtotal, 0),
                 items: cart.map(item => ({
                     id: item.id,
                     quantity: item.quantity
@@ -352,18 +387,13 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success) {
-                        // buka struk
-                        window.location.href = `/orders/${data.order_id}/struk`;
-                    } else {
-                        alert(data.message || 'Terjadi kesalahan');
-                        console.error(data.error);
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert('Gagal mengirim transaksi ke server');
+                    alert('Pesanan berhasil disimpan!');
+                    location.reload();
                 });
+        });
+
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            document.getElementById('confirm-modal').classList.add('hidden');
         });
 
         // init

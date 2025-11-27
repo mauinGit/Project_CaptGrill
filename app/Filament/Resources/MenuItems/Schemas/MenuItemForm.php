@@ -5,6 +5,7 @@ namespace App\Filament\Resources\MenuItems\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Storage;
 use Filament\Schemas\Schema;
 
 class MenuItemForm
@@ -30,13 +31,18 @@ class MenuItemForm
                     ->required(),
                 FileUpload::make('image')
                     ->label('Foto Menu')
-                    ->directory('menu')          // akan disimpan di storage/app/public/menu
-                    ->disk('public')             // gunakan disk public
-                    ->visibility('public')       // file bisa diakses browser
-                    ->image()                    // validasi gambar
-                    ->maxSize(2048)              // maksimal 2MB
-                    ->preserveFilenames()        // opsional — simpan nama asli
-
+                    ->directory('menu')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->image()
+                    ->maxSize(10240) // 5MB
+                    ->preserveFilenames()
+                    ->nullable()                             // <— ini penting
+                    ->deleteUploadedFileUsing(function ($file, $model) {
+                        if ($model && $model->image) {
+                            Storage::disk('public')->delete($model->image);
+                        }
+                    }),
             ]);
     }
 }

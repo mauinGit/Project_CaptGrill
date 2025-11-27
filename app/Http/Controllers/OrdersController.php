@@ -13,8 +13,9 @@ class OrdersController extends Controller
     {
         $makanan = MenuItem::where('category', 'makanan')->get();
         $minuman = MenuItem::where('category', 'minuman')->get();
+        $paymentMethods = Order::paymentMethods();
 
-        return view('page.kasir', compact('makanan', 'minuman'));
+        return view('page.kasir', compact('makanan', 'minuman', 'paymentMethods'));
     }
 
     public function store(Request $request)
@@ -80,7 +81,6 @@ class OrdersController extends Controller
                 'order_id'   => $order->id,
                 'order_code' => $order->order_code,
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
 

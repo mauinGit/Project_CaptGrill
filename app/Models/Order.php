@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -30,7 +31,7 @@ class Order extends Model
                 }
             }
         });
-        
+
         static::creating(function ($order) {
             $today = now()->format('Ymd');
             $count = self::whereDate('created_at', now()->toDateString())->count() + 1;
@@ -56,4 +57,14 @@ class Order extends Model
         'items' => 'array',
     ];
 
+    public static function paymentMethods()
+    {
+        $type = DB::select("SHOW COLUMNS FROM orders LIKE 'payment_method'")[0]->Type;
+
+        preg_match('/^enum\((.*)\)$/', $type, $matches);
+
+        return array_map(function ($value) {
+            return trim($value, "'");
+        }, explode(',', $matches[1]));
+    }
 }

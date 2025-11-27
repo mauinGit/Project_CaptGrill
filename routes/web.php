@@ -6,31 +6,59 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RiwayatPembelianController;
 
+/*
+|--------------------------------------------------------------------------
+| Public route
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/financial-report/excel', function () {
-    $start = request('start');
-    $end = request('end');
+/*
+|--------------------------------------------------------------------------
+| Kasir routes (role: kasir)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['web','auth','role:kasir,admin'])->group(function () {
 
-    return Excel::download(
-        new FinancialReportExport($start, $end),
-        "Laporan-Keuangan-{$start}-sampai-{$end}.xlsx"
-    );
-})->name('financial-report.excel');
+    Route::get('/kasir', [OrdersController::class, 'index'])->name('kasir.index');
 
-Route::get('/riwayat-pembelian', [RiwayatPembelianController::class, 'riwayatPembelian'])
-    ->name('riwayat-pembelian');
+    Route::post('/kasir/transaksi', [OrdersController::class, 'store'])->name('kasir.store');
 
-Route::get('/orders/{id}/details', [RiwayatPembelianController::class, 'getOrderDetails'])
-    ->name('orders.details');
+    Route::get('/riwayat-pembelian', [RiwayatPembelianController::class, 'riwayatPembelian'])
+        ->name('riwayat-pembelian');
 
-Route::get('/orders/{id}/download', [RiwayatPembelianController::class, 'downloadStruk'])->name('orders.struk.download');
+    Route::get('/orders/{id}/details', [RiwayatPembelianController::class, 'getOrderDetails'])
+        ->name('orders.details');
 
-Route::get('/kasir', [OrdersController::class, 'index'])->name('kasir.index');
+    Route::get('/orders/{id}/download', [RiwayatPembelianController::class, 'downloadStruk'])
+        ->name('orders.struk.download');
+});
 
-Route::post('/kasir/transaksi', [OrdersController::class, 'store'])->name('kasir.store');
+/*
+|--------------------------------------------------------------------------
+| Admin routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
-Route::get('/kasir/menu/{id}', [OrdersController::class, 'detailMenu'])->name('kasir.menu.detail');
+    Route::get('/financial-report/excel', function () {
+        $start = request('start');
+        $end   = request('end');
 
+        return Excel::download(
+            new FinancialReportExport($start, $end),
+            "Laporan-Keuangan-{$start}-sampai-{$end}.xlsx"
+        );
+    })->name('financial-report.excel');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Laravel Breeze Auth
+|--------------------------------------------------------------------------
+*/
+
+require __DIR__.'/auth.php';
