@@ -35,25 +35,38 @@ class OrdersController extends Controller
         try {
             // Hitung total
             $totalAmount = 0;
+            $orderItems = [];
             foreach ($request->items as $item) {
                 $menuItem = MenuItem::findOrFail($item['id']);
-                $totalAmount += $menuItem->price * $item['quantity'];
+                $subtotal = $menuItem->price * $item['quantity'];
+                $totalAmount += $subtotal;
+
+                $orderItems[] = [
+                    'id' => $menuItem->id,
+                    'name' => $menuItem->name,
+                    'price' => $menuItem->price,
+                    'quantity' => $item['quantity'],
+                    'subtotal' => $subtotal
+                ];
             }
 
             // Generate order_code
             $today = now()->format('Ymd');
             $count = Order::whereDate('created_at', today())->count() + 1;
             $orderCode = 'ORD-' . $today . '-' . str_pad($count, 3, '0', STR_PAD_LEFT);
+            $totalQty = collect($request->items)->sum('quantity');
 
             // Simpan order
             $order = Order::create([
                 'order_code'    => $orderCode,
                 'customer_name' => $request->customer_name,
-                'payment_method'=> $request->payment_method,
+                'payment_method' => $request->payment_method,
                 'total_amount'  => $totalAmount,
                 'cash_given'    => $request->cash_given,
                 'change_amount' => $request->change_amount,
+                'quantity'      => $totalQty,  // <-- tinggal ini
             ]);
+
 
             // Simpan item ke pivot + potong stok
             foreach ($request->items as $item) {
@@ -78,8 +91,16 @@ class OrdersController extends Controller
             return response()->json([
                 'success'    => true,
                 'message'    => 'Transaksi berhasil disimpan',
-                'order_id'   => $order->id,
-                'order_code' => $order->order_code,
+                'order' => [
+                    'id' => $order->id,
+                    'order_code' => $order->order_code,
+                    'customer_name' => $order->customer_name,
+                    'payment_method' => $order->payment_method,
+                    'total_amount' => $order->total_amount,
+                    'cash_given' => $order->cash_given,
+                    'change_amount' => $order->change_amount,
+                    'items' => $orderItems
+                ]
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

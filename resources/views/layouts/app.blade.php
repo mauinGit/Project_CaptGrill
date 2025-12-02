@@ -113,6 +113,22 @@
                 transform: translateX(0);
             }
         }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .group:hover .animate-pulse {
+            animation: float 2s ease-in-out infinite;
+        }
     </style>
     @stack('styles')
 </head>
@@ -121,13 +137,15 @@
 
     <!-- Mobile Menu Button dengan Toggle -->
     <button
-        class="mobile-menu-btn fixed top-5 right-5 z-50 bg-secondary hover:bg-yellow-400 p-3 md:p-7 rounded-xl shadow-2xl transition-all duration-300 hover:scal-110 lg:hidden">
+        class="mobile-menu-btn fixed top-5 right-5 z-50 bg-[#113a25] hover:bg-[#0a2a1a] p-3 md:p-7 rounded-xl shadow-2xl transition-all duration-300 hover:scale-110 lg:hidden">
         <!-- Burger Icon -->
-        <svg class="w-6 h-6 md:w-8 md:h-8 text-primary burger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 md:w-8 md:h-8 text-[#ffde59] burger-icon" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
         <!-- Close Icon -->
-        <svg class="w-6 h-6 md:w-8 md:h-8 text-primary close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 md:w-8 md:h-8 text-[#ffde59] close-icon" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
     </button>

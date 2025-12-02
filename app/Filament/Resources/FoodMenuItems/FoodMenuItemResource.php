@@ -26,7 +26,7 @@ class FoodMenuItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Makanan';
     
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ShoppingBag;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -40,7 +40,6 @@ class FoodMenuItemResource extends Resource
         return MenuItemsTable::configure($table);
     }
 
-    // 🔴 FILTER data hanya kategori makanan
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

@@ -36,6 +36,9 @@ class AdminPanelProvider extends PanelProvider
             ->path($panelid)
             ->login()
             ->registration()
+            ->globalSearch(false)
+            ->brandLogo(asset('images/logo tanpa kata kata.png'))
+            ->brandLogoHeight('60px')
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -67,8 +70,8 @@ class AdminPanelProvider extends PanelProvider
     protected function getWidgets(): array
     {
         return [
-            FinanceStats::class,        // tampil paling atas
-            FinanceLineChart::class,    // bawahnya
+            FinanceStats::class,        
+            FinanceLineChart::class,    
             SalesChart::class,          // grafik kedua
             TopSales::class,            // tabel ranking penjualan
             ExportFinancialButton::class,

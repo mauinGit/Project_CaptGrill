@@ -18,8 +18,8 @@ class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Calculator;
+    
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema

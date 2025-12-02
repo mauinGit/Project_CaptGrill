@@ -30,19 +30,13 @@ class MenuItemForm
                     ])
                     ->required(),
                 FileUpload::make('image')
-                    ->label('Foto Menu')
                     ->directory('menu')
                     ->disk('public')
+                    ->moveFiles()
                     ->visibility('public')
-                    ->image()
-                    ->maxSize(10240) // 5MB
-                    ->preserveFilenames()
-                    ->nullable()                             // <— ini penting
-                    ->deleteUploadedFileUsing(function ($file, $model) {
-                        if ($model && $model->image) {
-                            Storage::disk('public')->delete($model->image);
-                        }
-                    }),
+                    ->deleteUploadedFileUsing(function ($file) {
+                        if ($file) Storage::disk('public')->delete($file);
+                    })
             ]);
     }
 }

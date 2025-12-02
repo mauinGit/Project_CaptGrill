@@ -26,7 +26,7 @@ class DrinkMenuItemResource extends Resource
 
     protected static ?string $navigationLabel = 'Minuman';
     
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ShoppingBag;
 
     protected static ?string $recordTitleAttribute = 'name';
 
