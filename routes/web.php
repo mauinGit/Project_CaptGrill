@@ -5,6 +5,7 @@ use App\Exports\FinancialReportExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\RiwayatPembelianController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +14,16 @@ use App\Http\Controllers\RiwayatPembelianController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
+
 
 /*
 |--------------------------------------------------------------------------
 | Kasir routes (role: kasir)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['web','auth','role:kasir,admin'])->group(function () {
+Route::middleware(['web', 'auth', 'role:kasir,admin'])->group(function () {
 
     Route::get('/kasir', [OrdersController::class, 'index'])->name('kasir.index');
 
@@ -55,10 +57,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('financial-report.excel');
 });
 
+Route::post('/admin/logout', function () {
+    Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/login');
+})->name('filament.admin.auth.logout');  // nama route yang dicari UI
+
 /*
 |--------------------------------------------------------------------------
 | Laravel Breeze Auth
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
