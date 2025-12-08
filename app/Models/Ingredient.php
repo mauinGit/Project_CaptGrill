@@ -14,10 +14,10 @@ class Ingredient extends Model
         'name',
         'stock',
         'unit',
+        'category',
         'reorder_level',
     ];
 
-    // 👇 Tambahkan ini agar Filament tahu kolom judul
     protected static ?string $recordTitleAttribute = 'name'; 
     
     public function menuItems() {

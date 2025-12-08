@@ -11,15 +11,22 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!Auth::check()) {
-            return redirect('/login');
+            return redirect()->route('login');
         }
 
         $user = Auth::user();
-
-        if (! in_array($user->role, $roles)) {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+        
+        // Cek apakah user memiliki salah satu role yang diizinkan
+        foreach ($roles as $role) {
+            if ($user->role === $role) {
+                return $next($request);
+            }
         }
 
-        return $next($request);
+        // Jika role tidak sesuai, logout dan redirect ke login
+        Auth::logout();
+        return redirect()->route('login')->withErrors([
+            'email' => 'Akses ditolak. Role tidak diizinkan.'
+        ]);
     }
 }

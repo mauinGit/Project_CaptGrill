@@ -1,48 +1,41 @@
 <x-filament::section>
-    <div class="max-w-xl mx-auto">
-        <!-- Header Section -->
-        <div class="text-center mb-4">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mb-3">
-            </div>
-            
-            <h2 class="text-2xl font-bold text-gray-900 mb-1">
-                Export Laporan Keuangan
-            </h2>
-        </div>
-
+    <div class="max-w-2xl mx-auto">
         <!-- Period Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 mb-4 border border-blue-100">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-medium text-gray-600 mb-0.5">Periode Laporan {{ now()->startOfMonth()->format('d M Y') }} — {{ now()->format('d M Y') }}</p>
+        <x-filament::card class="mb-6">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 mt-1">
+                    <div
+                        class="w-10 h-10 bg-primary-100 dark:bg-primary-500/20 rounded-lg flex items-center justify-center">
+                        <x-filament::icon icon="heroicon-o-calendar"
+                            class="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg p-2 shadow-sm">
+
+                <h2 class="text-2xl font-bold text-gray-950 dark:text-white mb-2">
+                    Export Laporan Keuangan
+                </h2>
+
+                <div class="flex-1">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        <x-filament::badge color="success" size="sm">
+                            Hari ke-{{ now()->day }}
+                        </x-filament::badge>
+                    </span>
                 </div>
             </div>
-        </div>
-
-        <!-- Report Contents -->
-        <div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-            <h3 class="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-3">
-                Isi Laporan
-            </h3>
-        </div>
+        </x-filament::card>
 
         <!-- Export Button -->
         <div class="text-center">
-            <x-filament::button
-                tag="a"
+            <x-filament::button tag="a"
                 href="{{ route('financial-report.excel', ['start' => now()->startOfMonth()->toDateString(), 'end' => now()->toDateString()]) }}"
-                size="lg"
-                color="success"
-                icon="heroicon-o-document-arrow-down"
-                class="px-8 py-3 text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow"
-            >
+                size="lg" color="success" icon="heroicon-o-document-arrow-down" icon-position="before"
+                class="w-full sm:w-auto">
                 Download Laporan Excel
             </x-filament::button>
 
-            <p class="text-xs text-gray-500 mt-3">
-                Format: Microsoft Excel (.xlsx) • Ukuran: ~50-100 KB
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-4 flex items-center justify-center gap-1">
+                File akan diunduh secara otomatis setelah tombol diklik
             </p>
         </div>
     </div>

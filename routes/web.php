@@ -14,9 +14,20 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        // Jika sudah login, redirect berdasarkan role
+        $user = Auth::user();
+        
+        if ($user->role === 'admin' || $user->role === 'kasir') {
+            return redirect()->route('kasir.index');
+        }
+        
+        // Default ke login
+        Auth::logout();
+    }
+    
     return redirect()->route('login');
 });
-
 
 /*
 |--------------------------------------------------------------------------

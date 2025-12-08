@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class TopSales extends TableWidget
 {
-    protected static ?string $heading = 'Top 5 Menu Terlaris';
+    protected static ?string $heading = 'Detail Menu Terjual';
 
     protected static ?int $sort = 5;
 

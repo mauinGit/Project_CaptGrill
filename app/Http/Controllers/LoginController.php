@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/Auth/LoginController.php
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -10,37 +9,41 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function showLoginForm()
-    {
-        return view('page.login'); // nanti kita buat blade-nya
+    {        
+        return view('page.login');
     }
 
     public function login(Request $request)
     {
+       
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            if ($user->role === 'admin' || $user->role === 'kasir') {
+                return redirect()->route('kasir.index');
+            }
+            
+            Auth::logout();
+        }
+
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        $remember = $request->has('remember');
-        
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-
             $user = Auth::user();
 
-            // kalau admin — boleh ke kasir atau langsung ke admin panel
-            if ($user->role === 'admin') {
-                return redirect()->route('kasir.index'); // atau route('filament.admin.pages.dashboard')
+            // Redirect berdasarkan role
+            switch ($user->role) {
+                case 'admin':
+                case 'kasir':
+                    return redirect()->route('kasir.index');
+                default:
+                    Auth::logout();
+                    return back()->withErrors(['email' => 'Role tidak diizinkan.']);
             }
-
-            // kalau kasir
-            if ($user->role === 'kasir') {
-                return redirect()->route('kasir.index');
-            }
-
-            // role lain (kalau someday ada)
-            Auth::logout();
-            return back()->withErrors(['email' => 'Role tidak diizinkan.']);
         }
 
         return back()->withErrors([
