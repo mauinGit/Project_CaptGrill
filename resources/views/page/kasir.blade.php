@@ -284,7 +284,7 @@
                         Total
                     </span>
                     <span id="total-text"
-                        class="font-bold text-[#ffde59] text-base sm:text-lg md:text-lg lg:text-xl xl:text-2xl truncate">
+                        class="font-bold text-[#ffde59] text-base sm:text-lg md:text-lg xl:text-lg` truncate">
                         Rp 0
                     </span>
                 </div>

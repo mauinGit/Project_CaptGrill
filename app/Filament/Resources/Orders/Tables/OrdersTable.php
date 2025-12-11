@@ -10,6 +10,9 @@ use Filament\Actions\EditAction;
 use Filament\Schemas\Components\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 
 class OrdersTable
 {
@@ -37,10 +40,6 @@ class OrdersTable
                     ->label('Metode Pembayaran')
                     ->sortable()
                     ->searchable(),
-                //TextColumn::make('status')
-                //    ->label('Status Pesanan')
-                //   ->sortable()
-                //    ->searchable(),
                 TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime('d M Y H:i')
@@ -50,13 +49,16 @@ class OrdersTable
                     ->dateTime('d M Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+
             ->filters([
                 //
             ])
+
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
