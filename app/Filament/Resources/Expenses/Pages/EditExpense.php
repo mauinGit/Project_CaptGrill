@@ -22,7 +22,15 @@ class EditExpense extends EditRecord
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['total_amount'] = collect($data['items'] ?? [])->sum('subtotal');
+        // $data['total_amount'] = collect($data['items'] ?? [])->sum('subtotal');
         return $data;
+    }
+
+    protected function afterSave(): void
+    {
+        // Hitung ulang total dari database
+        $this->record->update([
+            'total_amount' => $this->record->items()->sum('subtotal'),
+        ]);
     }
 }

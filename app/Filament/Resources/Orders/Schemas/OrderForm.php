@@ -29,7 +29,7 @@ class OrderForm
                     ->options([
                         'cash' => 'Cash',
                         'qris' => 'Qris',
-                        'gojek' => 'Gojek',
+                        'grab' => 'Gojek',
                     ])
                     ->required()
                     ->columnSpan(1),
@@ -115,7 +115,6 @@ class OrderForm
                             // Ambil total_amount yang sudah kamu hitung dari repeater
                             $total = $get('total_amount') ?? 0;
 
-                            // Set kembalian
                             $set('change_amount', max(0, $state - $total));
                         })
                         ->required(),

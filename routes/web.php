@@ -43,8 +43,11 @@ Route::middleware(['web', 'auth', 'role:kasir,admin'])->group(function () {
     Route::get('/orders/{id}/details', [RiwayatPembelianController::class, 'getOrderDetails'])
         ->name('orders.details');
 
-    Route::get('/orders/{id}/download', [RiwayatPembelianController::class, 'downloadStruk'])
-        ->name('orders.struk.download');
+    Route::get('/orders/{id}/struk', [RiwayatPembelianController::class, 'struk'])
+        ->name('orders.struk'); // Ubah nama 
+        
+    // Route::get('/orders/{id}/download', [RiwayatPembelianController::class, 'downloadStruk'])
+    //     ->name('orders.struk.download');
 });
 
 /*
@@ -69,7 +72,7 @@ Route::post('/admin/logout', function () {
     Auth::logout();
     session()->invalidate();
     session()->regenerateToken();
-    return redirect('/login');
+    return redirect()->route('login');
 })->name('filament.admin.auth.logout');  // nama route yang dicari UI
 
 /*

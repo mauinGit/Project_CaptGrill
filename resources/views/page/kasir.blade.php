@@ -8,7 +8,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <!-- Kasir Section -->
             <div
-                class="bg-gradient-to-br from-[#ffde59] via-[#ffd93d] to-[#ffde59] backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl border border-[#113a25]/10 relative overflow-hidden group hover:shadow-3xl transition-all duration-300 w-full">
+                class="bg-gradient-to-br from-[#ffde59] via-[#ffd93d] to-[#ffde59] backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-6 shadow-2xl border border-[#113a25]/10 relative overflow-hidden group hover:shadow-3xl transition-all duration-300 w-full">
                 <div
                     class="absolute -bottom-6 -left-6 sm:-bottom-8 sm:-left-8 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-[#113a25]/10 rounded-full blur-xl">
                 </div>
@@ -134,17 +134,17 @@
         <div class="lg:col-span-2 space-y-6">
             {{-- Makanan --}}
             <div>
-                <h2 class="bg-[#ffde59]/95 backdrop-blur-sm rounded-[20px] flex items-center gap-10 mb-4">
+                <h2 class="bg-[#ffde59] backdrop-blur-sm rounded-[12px] flex items-center gap-3 mb-4">
                     <div
-                        class="bg-gradient-to-br from-primary to-green-700 mt-4 mb-4 ml-8 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg">
+                        class="bg-gradient-to-br from-primary to-green-700 mt-3 mb-3 ml-4 sm:ml-8 p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg">
 
-                        <svg viewBox="0 0 512 512" class="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-secondary"
+                        <svg viewBox="0 0 512 512" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-secondary"
                             fill="none" stroke-width="28" stroke="currentColor" class="size-3">
                             <path
                                 d="M464 256H48a48 48 0 0 0 0 96h416a48 48 0 0 0 0-96zm16 128H32a16 16 0 0 0-16 16v16a64 64 0 0 0 64 64h352a64 64 0 0 0 64-64v-16a16 16 0 0 0-16-16zM58.64 224h394.72c34.57 0 54.62-43.9 34.82-75.88C448 83.2 359.55 32.1 256 32c-103.54.1-192 51.2-232.18 116.11C4 180.09 24.07 224 58.64 224zM384 112a16 16 0 1 1-16 16 16 16 0 0 1 16-16zM256 80a16 16 0 1 1-16 16 16 16 0 0 1 16-16zm-128 32a16 16 0 1 1-16 16 16 16 0 0 1 16-16z" />
                         </svg>
                     </div>
-                    <span class="text-[#113a25] font-bold text-2xl sm:text-3xl tracking-tight">
+                    <span class="text-[#113a25] font-bold text-md md:text-lg lg:text-xl tracking-tight">
                         Makanan
                     </span>
                 </h2>
@@ -179,17 +179,16 @@
             <div>
                 <h2 class="bg-[#ffde59] backdrop-blur-sm rounded-[12px] flex items-center gap-3 mb-4">
                     <div
-                        class="bg-gradient-to-br from-primary to-green-700 mt-4 mb-4 ml-8 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg">
+                        class="bg-gradient-to-br from-primary to-green-700 mt-3 mb-3 ml-4 sm:ml-8 p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg">
 
-                        <svg viewBox="0 0 64 64" class="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-secondary"
+                        <svg viewBox="0 0 64 64" class="w-6 h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-secondary"
                             fill="none" stroke-width="4" stroke="currentColor" class="size-10">
                             <path
                                 d="M47.396 19.126H16.604l3.208 34.837A2.244 2.244 0 0 0 22.046 56h19.908a2.244 2.244 0 0 0 2.234-2.037l3.208-34.837zM13.164 19.126h37.672M34.641 18.765 36.931 8h3.747" />
                             <path d="M35.804 52.665h3.181a2.263 2.263 0 0 0 2.247-1.996l.844-7.089" />
                         </svg>
                     </div>
-
-                    <span class="text-primary font-bold text-2xl sm:text-3xl tracking-tight">
+                    <span class="text-[#113a25] font-bold text-md md:text-lg lg:text-xl tracking-tight">
                         Minuman
                     </span>
                 </h2>
@@ -238,7 +237,7 @@
                 <div
                     class="bg-white/20 backdrop-blur-sm p-1.5 sm:p-2 md:p-2.5 lg:p-3 rounded-lg sm:rounded-xl relative z-10">
                     <svg viewBox="0 0 24 24"
-                        class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 text-[#ffde59]"
+                        class="w-6 h-6 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 text-[#ffde59]"
                         fill="none" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
@@ -701,7 +700,7 @@
     `;
             confirmBtn.disabled = true;
 
-            let total = 0; // Ganti dari subtotal ke total
+            let total = 0;
             cart.forEach(item => total += item.price * item.quantity);
 
             const payload = {
@@ -742,9 +741,6 @@
                 .then(data => {
                     console.log('Success:', data);
 
-                    // Cetak struk sederhana
-                    printSimpleReceipt();
-
                     // Reset form
                     cart = [];
                     renderCart();
@@ -757,16 +753,21 @@
 
                     // Tampilkan notifikasi sukses
                     showSuccessNotification('Pesanan berhasil diproses!');
+
+                    // CETAK STRUK DENGAN TEMPLATE PDF
+                    if (data.order && data.order.id) {
+                        // Gunakan template PDF yang sudah ada
+                        setTimeout(() => {
+                            printReceiptFromTemplate(data.order.id);
+                        }, 800); // Tunggu 800ms untuk memastikan data tersimpan
+                    } else {
+                        // Fallback ke struk sederhana jika tidak ada order.id
+                        console.warn('Order ID tidak ditemukan, menggunakan fallback');
+                        setTimeout(() => {
+                            printSimpleReceipt();
+                        }, 500);
+                    }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan: ' + error.message);
-                })
-                .finally(() => {
-                    // Reset button
-                    confirmBtn.innerHTML = originalText;
-                    confirmBtn.disabled = false;
-                });
         });
 
         /* ===============================
@@ -778,34 +779,72 @@
         });
 
         /* ===============================
-           FUNGSI CETAK STRUK SEDERHANA
+           FUNGSI CETAK STRUK DENGAN TEMPLATE PDF
         =================================*/
-        // Di fungsi printSimpleReceipt():
+        function printReceiptFromTemplate(orderId) {
+            console.log('Membuka struk untuk order ID:', orderId);
+
+            // URL untuk membuka struk
+            const printUrl = `/orders/${orderId}/struk`;
+
+            // Buka tab baru untuk struk
+            const printWindow = window.open(printUrl, '_blank', 'width=400,height=600');
+
+            // Auto print setelah halaman load
+            if (printWindow) {
+                printWindow.focus();
+
+                // Tunggu halaman selesai loading
+                let attempts = 0;
+                const checkLoaded = setInterval(() => {
+                    attempts++;
+
+                    // Coba print setelah 1 detik
+                    if (attempts >= 2) {
+                        clearInterval(checkLoaded);
+                        setTimeout(() => {
+                            try {
+                                printWindow.print();
+                                // Opsional: tutup window setelah print
+                                // setTimeout(() => printWindow.close(), 1000);
+                            } catch (e) {
+                                console.log('Print gagal, mungkin di-block oleh browser');
+                                printWindow.focus();
+                            }
+                        }, 500);
+                    }
+                }, 500);
+            }
+        }
+
+        /* ===============================
+           FUNGSI FALLBACK SEDERHANA
+        =================================*/
         function printSimpleReceipt() {
-            console.log('printSimpleReceipt dipanggil');
+            console.log('Fallback: printSimpleReceipt dipanggil');
 
             const customerName = document.getElementById('customer_name').value;
             const paymentMethod = document.getElementById('payment_method').value;
             const cashGiven = Number(document.getElementById('cash_given').value.replace(/\D/g, '') || 0);
 
-            let total = 0; // Ganti dari 'subtotal' menjadi 'total'
+            let total = 0;
             cart.forEach(item => total += item.price * item.quantity);
             const changeAmount = Math.max(cashGiven - total, 0);
 
             const receiptContent = `
-        <div style="font-family: 'Courier New', monospace; font-size: 12px; width: 58mm; padding: 10px;">
+        <div style="font-family: 'Courier New', monospace; font-size: 12px; width: 250px; padding: 10px;">
             <div style="text-align: center; margin-bottom: 10px;">
-                <h2 style="margin: 0; font-weight: bold;">TOKO ANDA</h2>
-                <p style="margin: 0; font-size: 10px;">Alamat Toko Anda</p>
-                <p style="margin: 0; font-size: 10px;">Telp: 08123456789</p>
+                <h3 style="margin: 0; font-weight: bold;">CAPT.grill</h3>
+                <p style="margin: 0; font-size: 10px;">Jl. Nusantara Gg. Buntu</p>
+                <p style="margin: 0; font-size: 10px;">Timbangan, Indralaya Utara</p>
             </div>
             
             <hr style="border: 0; border-top: 1px dashed #000; margin: 10px 0;">
             
             <div style="margin-bottom: 10px;">
-                <p style="margin: 2px 0;"><strong>No:</strong> #${Date.now()}</p>
                 <p style="margin: 2px 0;"><strong>Tanggal:</strong> ${new Date().toLocaleString('id-ID')}</p>
                 ${customerName ? `<p style="margin: 2px 0;"><strong>Pelanggan:</strong> ${customerName}</p>` : ''}
+                <p style="margin: 2px 0;"><strong>Metode:</strong> ${paymentMethod.toUpperCase()}</p>
             </div>
             
             <hr style="border: 0; border-top: 1px dashed #000; margin: 10px 0;">
@@ -834,10 +873,6 @@
                     <span>Kembali:</span>
                     <span>Rp ${changeAmount.toLocaleString('id-ID')}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin: 3px 0;">
-                    <span>Metode:</span>
-                    <span>${paymentMethod.toUpperCase()}</span>
-                </div>
             </div>
             
             <hr style="border: 0; border-top: 1px dashed #000; margin: 10px 0;">
@@ -854,9 +889,27 @@
         <html>
         <head>
             <title>Struk Pembayaran</title>
+            <style>
+                @media print {
+                    body { margin: 0; padding: 10px; }
+                    .no-print { display: none; }
+                }
+                button {
+                    padding: 8px 16px;
+                    margin: 10px 5px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-weight: bold;
+                }
+            </style>
         </head>
-        <body onload="window.print(); setTimeout(() => window.close(), 500);">
+        <body>
             ${receiptContent}
+            <div class="no-print" style="text-align: center; margin-top: 20px;">
+                <button onclick="window.print()" style="background: #4CAF50; color: white;">Cetak Struk</button>
+                <button onclick="window.close()" style="background: #f44336; color: white;">Tutup</button>
+            </div>
         </body>
         </html>
     `);

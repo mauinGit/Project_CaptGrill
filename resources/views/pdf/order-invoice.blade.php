@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Receipt</title>
@@ -13,13 +14,19 @@
         }
 
         .wrapper {
-            width: 250px; /* 58mm thermal */
+            width: 250px;
+            /* 58mm thermal */
             padding: 2px;
             margin: auto;
         }
 
-        .center { text-align: center; }
-        .bold { font-weight: bold; }
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
 
         .line {
             border-bottom: 1px dashed #000;
@@ -40,98 +47,173 @@
             padding: 2px 0;
         }
 
-        .item-name { width: 55%; }
-        .item-qty  { width: 10%; text-align: right; }
-        .item-price{ width: 35%; text-align: right; }
+        .item-name {
+            width: 55%;
+        }
+
+        .item-qty {
+            width: 10%;
+            text-align: right;
+        }
+
+        .item-price {
+            width: 35%;
+            text-align: right;
+        }
     </style>
 
 </head>
+
 <body>
-<div class="wrapper">
+    <div class="wrapper">
 
-    <!-- LOGO -->
-    <div class="center bold">
-    <img src="{{ public_path('images/logo hitam putih.png') }}" 
-         width="80" 
-         style="margin-bottom: 5px;" 
-         alt="logo">
+        <!-- LOGO -->
+        <div class="center bold">
+            <img src="{{ public_path('images/logo hitam putih.png') }}" width="80" style="margin-bottom: 5px;"
+                alt="logo">
+        </div>
+
+        <div class="center" style="margin-bottom:3px;">
+            Jl. Nusantara Gg. Buntu, Timbangan, Indralaya Utara, Ogan Ilir 30862
+        </div>
+
+        <div class="center" style="margin-bottom:3px;">
+            Jam Operasional: 10.00 - 22.00 WIB
+        </div>
+
+        <div class="center" style="margin-bottom:5px;">
+            Hotline / WA: 0812-3456-7890
+        </div>
+
+        <div class="line"></div>
+
+        <!-- ORDER INFO -->
+        <table>
+            <tr>
+                <td>No. Order</td>
+                <td>{{ $order->order_code }}</td>
+            </tr>
+            <tr>
+                <td>Tanggal/Jam</td>
+                <td>{{ $order->created_at->format('d M Y H:i') }}</td>
+            </tr>
+            <tr>
+                <td>Pelanggan</td>
+                <td>{{ $order->customer_name }}</td>
+            </tr>
+            <tr>
+                <td>Metode</td>
+                <td>{{ strtoupper($order->payment_method) }}</td>
+            </tr>
+        </table>
+
+        <div class="double-line"></div>
+
+        <!-- ITEMS -->
+        <table>
+            <tr class="bold">
+                <td class="item-name">Menu</td>
+                <td class="item-qty">Qty</td>
+                <td class="item-price">Sub</td>
+            </tr>
+
+            @foreach ($order->menuItems as $item)
+                <tr>
+                    <td class="item-name">{{ $item->name }}</td>
+                    <td class="item-qty">{{ $item->pivot->quantity }}</td>
+                    <td class="item-price">{{ number_format($item->pivot->subtotal, 0, ',', '.') }}</td>
+                </tr>
+            @endforeach
+        </table>
+
+        <div class="double-line"></div>
+
+        <!-- TOTAL -->
+        <table>
+            <tr>
+                <td>Total Qty</td>
+                <td class="item-price">{{ $order->quantity }}</td>
+            </tr>
+
+            <tr class="bold">
+                <td>Grand Total</td>
+                <td class="item-price">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+            </tr>
+
+            <!-- UANG DIBERIKAN -->
+            <tr>
+                <td>Bayar</td>
+                <td class="item-price">Rp {{ number_format($order->cash_given, 0, ',', '.') }}</td>
+            </tr>
+
+            <!-- KEMBALIAN -->
+            <tr class="bold">
+                <td>Kembali</td>
+                <td class="item-price">Rp {{ number_format($order->change_amount, 0, ',', '.') }}</td>
+            </tr>
+        </table>
+
+        <div class="double-line"></div>
+
+        <div class="center">
+            Terimakasih telah berbelanja<br>
+            Silahkan datang kembali!
+        </div>
+
     </div>
-
-    <div class="center" style="margin-bottom:3px;">
-        Jl. Nusantara Gg. Buntu, Timbangan, Indralaya Utara, Ogan Ilir 30862
-    </div>
-
-    <div class="center" style="margin-bottom:3px;">
-        Jam Operasional: 10.00 - 22.00 WIB
-    </div>
-
-    <div class="center" style="margin-bottom:5px;">
-        Hotline / WA: 0812-3456-7890
-    </div>
-
-    <div class="line"></div>
-
-    <!-- ORDER INFO -->
-    <table>
-        <tr><td>No. Order</td><td>{{ $order->order_code }}</td></tr>
-        <tr><td>Tanggal/Jam</td><td>{{ $order->created_at->format('d M Y H:i') }}</td></tr>
-        <tr><td>Pelanggan</td><td>{{ $order->customer_name }}</td></tr>
-        <tr><td>Metode</td><td>{{ strtoupper($order->payment_method) }}</td></tr>
-    </table>
-
-    <div class="double-line"></div>
-
-    <!-- ITEMS -->
-    <table>
-        <tr class="bold">
-            <td class="item-name">Menu</td>
-            <td class="item-qty">Qty</td>
-            <td class="item-price">Sub</td>
-        </tr>
-
-        @foreach($order->menuItems as $item)
-        <tr>
-            <td class="item-name">{{ $item->name }}</td>
-            <td class="item-qty">{{ $item->pivot->quantity }}</td>
-            <td class="item-price">{{ number_format($item->pivot->subtotal, 0, ',', '.') }}</td>
-        </tr>
-        @endforeach
-    </table>
-
-    <div class="double-line"></div>
-
-    <!-- TOTAL -->
-    <table>
-        <tr>
-            <td>Total Qty</td>
-            <td class="item-price">{{ $order->quantity }}</td>
-        </tr>
-
-        <tr class="bold">
-            <td>Grand Total</td>
-            <td class="item-price">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-        </tr>
-
-        <!-- UANG DIBERIKAN -->
-        <tr>
-            <td>Bayar</td>
-            <td class="item-price">Rp {{ number_format($order->cash_given, 0, ',', '.') }}</td>
-        </tr>
-
-        <!-- KEMBALIAN -->
-        <tr class="bold">
-            <td>Kembali</td>
-            <td class="item-price">Rp {{ number_format($order->change_amount, 0, ',', '.') }}</td>
-        </tr>
-    </table>
-
-    <div class="double-line"></div>
-
-    <div class="center">
-        Terimakasih telah berbelanja<br>
-        Silahkan datang kembali!
-    </div>
-
-</div>
 </body>
+
+<!-- resources/views/pdf/order-invoice.blade.php -->
+<!-- Tambahkan di bagian bawah sebelum </body> -->
+
+<script>
+    // Auto print ketika halaman selesai load
+    window.onload = function() {
+        // Tunggu sebentar untuk memastikan konten ter-render
+        setTimeout(function() {
+            try {
+                window.print();
+                // Opsional: kembali ke halaman sebelumnya setelah print
+                // setTimeout(function() {
+                //     window.close();
+                // }, 500);
+            } catch (e) {
+                console.log('Auto-print mungkin di-block oleh browser');
+            }
+        }, 500);
+    };
+
+    // Tambahkan event listener untuk tombol print manual
+    document.addEventListener('DOMContentLoaded', function() {
+        const printBtn = document.createElement('button');
+        printBtn.textContent = 'Cetak Struk';
+        printBtn.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 1000;
+        `;
+        printBtn.onclick = function() {
+            window.print();
+        };
+        document.body.appendChild(printBtn);
+
+        // Sembunyikan tombol saat print
+        const style = document.createElement('style');
+        style.textContent = `
+            @media print {
+                button { display: none !important; }
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+
 </html>
